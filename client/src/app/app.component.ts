@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
 import { Title } from '@angular/platform-browser';
+import { io } from 'socket.io-client';
 
 @Component({
   selector: 'app-root',
@@ -28,5 +29,30 @@ export class AppComponent implements OnInit {
         return;
       }
     });
+
+    //TO:DO remove this
+    try {
+      const socket = io("http://localhost:3000/test");
+
+      socket.on("connect", () => {
+        console.log('is socket connected: ',socket.connected);
+      });
+
+      socket.on("disconnect", () => {
+        console.log('is socket disconnected: ',socket.connected);
+      });
+
+      socket.on("connect_error", (err) => {
+        console.log('socket connection error');
+        console.log(err);
+      });
+
+      socket.on("greet", (session) => {
+        console.log('socket session created: ',session);
+      });
+
+    } catch (err) {
+      console.error(err);
+    } 
   }
 }
