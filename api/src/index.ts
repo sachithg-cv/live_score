@@ -1,26 +1,22 @@
 import express from 'express';
 import { createServer } from "http";
-import { Server} from "socket.io";
 import { json } from 'body-parser';
-import { createTestNamespace } from './messaging/namespace/test';
 
-export const app = express();
-app.use(json());
+import { appRoutes } from './routes/app-routes';
+import socketServer from './messaging/server';
+import testNameSpace from './messaging/namespace/test-name-space';
 
-const httpServer = createServer(app);
+const root = express();
+root.use(json());
 
-// create socket sever
-const io = new Server(httpServer, {
-    cors: {
-        origin: ["http://localhost:4200"]
-    }
-});
+root.use("/api/v1", appRoutes);
 
-const testNS = createTestNamespace(io);
+const httpServer = createServer(root);
 
-app.get('/hello', (req, res) => {
-    testNS.to("room1").emit("greet", {message: 'Hello User'});
-    res.send('Hello world');
-});
+// init socket server
+socketServer.initServer(httpServer,["http://localhost:4200"]);
+
+// create namespaces
+testNameSpace.initNameSpace(socketServer.createNameSpace("test"));
 
 httpServer.listen(3000);
