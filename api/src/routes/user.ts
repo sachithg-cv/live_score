@@ -56,4 +56,17 @@ router.post('/signin', async (req: Request, res: Response) => {
     res.status(200).send(existingUser);
 });
 
+router.get('/currentuser', (req: Request, res: Response) => {
+    if(!req.session?.jwt) {
+        return res.send({currentuser: null});
+    }
+
+    try {
+        const payload = jwt.verify(req.session.jwt, "test#123");
+        return res.send({currentuser: payload});
+    } catch(err) {
+        return res.send({currentuser: null});
+    }
+});
+
 export {router as userRouter};
