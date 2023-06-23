@@ -3,6 +3,8 @@ import testNameSpace from '../messaging/namespace/test-name-space';
 import { User } from '../models/user';
 import jwt from 'jsonwebtoken';
 import { Password } from "../services/password";
+import { currentuser } from "../middlewares/current-user";
+import { requireAuth } from "../middlewares/require-auth";
 
 const router = express.Router();
 
@@ -56,17 +58,13 @@ router.post('/signin', async (req: Request, res: Response) => {
     res.status(200).send(existingUser);
 });
 
-router.get('/currentuser', (req: Request, res: Response) => {
-    if(!req.session?.jwt) {
-        return res.send({currentuser: null});
-    }
+router.get('/currentuser', currentuser, requireAuth, (req: Request, res: Response) => {
+    return res.send({currentuser: req.currentuser || null});
+});
 
-    try {
-        const payload = jwt.verify(req.session.jwt, "test#123");
-        return res.send({currentuser: payload});
-    } catch(err) {
-        return res.send({currentuser: null});
-    }
+router.post('/signout', (req: Request, res: Response) => {
+    req.session = null;
+    res.send({});
 });
 
 export {router as userRouter};
