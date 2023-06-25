@@ -6,8 +6,15 @@ import { appRoutes } from './routes/app-routes';
 import socketServer from './messaging/server';
 import testNameSpace from './messaging/namespace/test-name-space';
 import cookieSession from 'cookie-session';
+import cors from 'cors';
 
 const root = express();
+root.use(cors({
+    origin: ['http://localhost:4200'],
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],
+    credentials: true
+}));
+
 root.use(json());
 root.use(cookieSession({
     signed: false

@@ -6,6 +6,8 @@ import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
 import { LoginComponent } from './views/pages/login/login.component';
 import { RegisterComponent } from './views/pages/register/register.component';
+import { SignupComponent } from './views/auth/signup/signup.component';
+import { AuthModule } from './views/auth/auth.module';
 
 const routes: Routes = [
   {
@@ -94,8 +96,8 @@ const routes: Routes = [
     }
   },
   {
-    path: 'register',
-    component: RegisterComponent,
+    path: 'signup',
+    component: SignupComponent,
     data: {
       title: 'Register Page'
     }
@@ -110,7 +112,8 @@ const routes: Routes = [
       anchorScrolling: 'enabled',
       initialNavigation: 'enabledBlocking'
       // relativeLinkResolution: 'legacy'
-    })
+    }),
+    AuthModule,
   ],
   exports: [RouterModule]
 })

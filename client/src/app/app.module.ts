@@ -15,6 +15,8 @@ import { AppComponent } from './app.component';
 // Import containers
 import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
 
+import {AuthHttpInterceptor} from './views/auth/auth-http-interceptor';
+
 import {
   AvatarModule,
   BadgeModule,
@@ -37,6 +39,7 @@ import {
 } from '@coreui/angular';
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -80,7 +83,12 @@ const APP_CONTAINERS = [
       useClass: HashLocationStrategy
     },
     IconSetService,
-    Title
+    Title,
+    {
+      provide:HTTP_INTERCEPTORS,
+      useClass: AuthHttpInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
