@@ -1,0 +1,24 @@
+<div class="field">
+    <label>{{label}}</label>
+    <input [type]="inputType" [formControl]="control" cFormControl/>
+    <div *ngIf="showErrors()">
+        <p *ngIf="control.errors.required">
+            Value is required
+        </p>
+        <p *ngIf="control.errors.minlength">
+            Value you entered is 
+            {{control.errors.minlength.actualLength}}
+            characters long, but it must be atleast
+            {{control.errors.minlength.requiredLength}}
+        </p>
+        <p *ngIf="control.errors.maxlength">
+            Value you entered is 
+            {{control.errors.maxlength.actualLength}}
+            characters long, but it cannot be longer than
+            {{control.errors.maxlength.requiredLength}}
+        </p>
+        <p *ngIf="control.errors.pattern">
+           Invalid format
+        </p>
+    </div>
+</div>
