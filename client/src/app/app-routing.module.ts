@@ -9,6 +9,7 @@ import { RegisterComponent } from './views/pages/register/register.component';
 import { SignupComponent } from './views/auth/signup/signup.component';
 import { AuthModule } from './views/auth/auth.module';
 import { SigninComponent } from './views/auth/signin/signin.component';
+import {AuthGuard} from './views/auth/auth.guard';
 
 const routes: Routes = [
   {
@@ -25,11 +26,12 @@ const routes: Routes = [
     children: [
       {
         path: 'dashboard',
+        canLoad: [AuthGuard],
         loadChildren: () =>
           import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
       },
       {
-        path: 'theme',
+        path: 'theme', 
         loadChildren: () =>
           import('./views/theme/theme.module').then((m) => m.ThemeModule)
       },
@@ -118,8 +120,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
       scrollPositionRestoration: 'top',
       anchorScrolling: 'enabled',
-      initialNavigation: 'enabledBlocking'
-      // relativeLinkResolution: 'legacy'
+      // initialNavigation: 'enabledBlocking'
+       // relativeLinkResolution: 'legacy'
     }),
     AuthModule,
   ],

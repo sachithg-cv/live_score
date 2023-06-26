@@ -58,7 +58,7 @@ router.post('/signin', async (req: Request, res: Response) => {
     res.status(200).send(existingUser);
 });
 
-router.get('/currentuser', currentuser, requireAuth, (req: Request, res: Response) => {
+router.get('/currentuser', currentuser, (req: Request, res: Response) => {
     return res.send({currentuser: req.currentuser || null});
 });
 

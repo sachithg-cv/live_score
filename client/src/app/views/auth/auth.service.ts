@@ -26,7 +26,7 @@ interface SinginResponse {
     providedIn: 'root'
 })
 export class AuthService {
-    signedin$ = new BehaviorSubject<boolean>(false);
+    signedin$ = new BehaviorSubject<any>(null);
 
     constructor(private httpClient: HttpClient) {
 
@@ -46,9 +46,11 @@ export class AuthService {
     getCurrentUser() {
         return this.httpClient.get<any>('http://localhost:3000/api/v1/user/currentuser')
         .pipe(
-            tap((res) => {
-                if (res && res.id && res.email) {
+            tap(({currentuser}) => {
+                if (currentuser && currentuser.id && currentuser.email) {
                     this.signedin$.next(true);
+                } else {
+                    this.signedin$.next(false);
                 }
             })
         );
