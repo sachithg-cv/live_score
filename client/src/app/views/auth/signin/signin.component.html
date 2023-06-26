@@ -1,0 +1,32 @@
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <c-container>
+      <c-row class="justify-content-center">
+        <c-col lg="7" md="9" xl="6">
+          <c-card class="mx-4">
+            <c-card-body class="p-4">
+                <form (ngSubmit)="onSubmit()" cForm [formGroup]="authForm">
+                    <h1>Signin</h1>
+                    <p class="text-medium-emphasis">Login to your account</p>
+                    <app-input inputType="text" label="Username" [control]="authForm.get('email')"></app-input>
+                    <app-input inputType="password" label="Password" [control]="authForm.get('password')"></app-input>
+                    <div class="d-grid" style="margin-top: 20px;">
+                        <button type="submit" cButton color="success">Login</button>
+                    </div>
+                    <div *ngIf="authForm.errors">
+                        <p *ngIf="authForm.errors['noConnection']">
+                            No network connection
+                        </p>
+                        <p *ngIf="authForm.errors['unknownError']">
+                            Failed to Signin
+                        </p>
+                        <p *ngIf="authForm.errors['invalidCredentials']">
+                            Invalid Credentials
+                        </p>
+                    </div>
+                </form>
+            </c-card-body>
+          </c-card>
+        </c-col>
+      </c-row>
+    </c-container>
+</div>
