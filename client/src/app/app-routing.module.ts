@@ -8,6 +8,7 @@ import { LoginComponent } from './views/pages/login/login.component';
 import { RegisterComponent } from './views/pages/register/register.component';
 import { SignupComponent } from './views/auth/signup/signup.component';
 import { AuthModule } from './views/auth/auth.module';
+import { SigninComponent } from './views/auth/signin/signin.component';
 
 const routes: Routes = [
   {
@@ -100,6 +101,13 @@ const routes: Routes = [
     component: SignupComponent,
     data: {
       title: 'Register Page'
+    }
+  },
+  {
+    path: 'signin',
+    component: SigninComponent,
+    data: {
+      title: 'Signin Page'
     }
   },
   {path: '**', redirectTo: 'dashboard'}

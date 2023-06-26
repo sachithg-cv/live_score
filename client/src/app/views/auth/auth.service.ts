@@ -12,6 +12,16 @@ interface SingupResponse {
     id: string;
 }
 
+interface SinginRequest {
+    email: string;
+    password: string;
+}
+
+interface SinginResponse {
+    email: string;
+    id: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -40,6 +50,17 @@ export class AuthService {
                 if (res && res.id && res.email) {
                     this.signedin$.next(true);
                 }
+            })
+        );
+    }
+
+    signin(credentials: SinginRequest) {
+        return this.httpClient.post<SinginResponse>(
+            'http://localhost:3000/api/v1/user/signin',
+            credentials
+        ).pipe(
+            tap(() => {
+                this.signedin$.next(true);
             })
         );
     }

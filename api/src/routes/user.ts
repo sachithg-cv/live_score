@@ -17,7 +17,7 @@ router.post('/signup', async (req: Request, res: Response) => {
     const {email, password} = req.body;
     const existingUser = await User.findOne({ email });
     if(existingUser) {
-        return res.send({message:'Email is already in use'});
+        return res.status(400).send({message:'Email is already in use'});
     }
     const user = User.build({email, password});
     await user.save();
@@ -38,12 +38,12 @@ router.post('/signin', async (req: Request, res: Response) => {
     const {email, password} = req.body;
     const existingUser = await User.findOne({ email });
     if(!existingUser) {
-        return res.send({message:'Invalid credentials'});
+        return res.status(401).send({message:'Invalid credentials'});
     }
 
     const passwordMatch = await Password.compare(existingUser.password, password);
     if(!passwordMatch) {
-        return res.send({message:'Invalid credentials'});
+        return res.status(401).send({message:'Invalid credentials'});
     }
 
     const userJwt = jwt.sign({
