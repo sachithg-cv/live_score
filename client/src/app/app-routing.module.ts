@@ -10,6 +10,7 @@ import { SignupComponent } from './views/auth/signup/signup.component';
 import { AuthModule } from './views/auth/auth.module';
 import { SigninComponent } from './views/auth/signin/signin.component';
 import {AuthGuard} from './views/auth/auth.guard';
+import { SignoutComponent } from './views/auth/signout/signout.component';
 
 const routes: Routes = [
   {
@@ -110,6 +111,13 @@ const routes: Routes = [
     component: SigninComponent,
     data: {
       title: 'Signin Page'
+    }
+  },
+  {
+    path: 'signout',
+    component: SignoutComponent,
+    data: {
+      title: 'Signout Page'
     }
   },
   {path: '**', redirectTo: 'dashboard'}
