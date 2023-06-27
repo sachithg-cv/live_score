@@ -27,6 +27,7 @@ interface SinginResponse {
 })
 export class AuthService {
     signedin$ = new BehaviorSubject<any>(null);
+    currentUser$ = new BehaviorSubject<any>(null);
 
     constructor(private httpClient: HttpClient) {
 
@@ -37,8 +38,11 @@ export class AuthService {
             'http://localhost:3000/api/v1/user/signup',
             credentials
         ).pipe(
-            tap(() => {
+            tap((data) => {
                 this.signedin$.next(true);
+                if (data && data.email) {
+                    this.currentUser$.next(data.email);
+                }
             })
         );
     }
@@ -49,6 +53,8 @@ export class AuthService {
             tap(({currentuser}) => {
                 if (currentuser && currentuser.id && currentuser.email) {
                     this.signedin$.next(true);
+                    const {email} = currentuser;
+                    this.currentUser$.next(email);
                 } else {
                     this.signedin$.next(false);
                 }
@@ -61,8 +67,20 @@ export class AuthService {
             'http://localhost:3000/api/v1/user/signin',
             credentials
         ).pipe(
-            tap(() => {
+            tap((data) => {
                 this.signedin$.next(true);
+                if (data && data.email) {
+                    this.currentUser$.next(data.email);
+                }
+            })
+        );
+    }
+
+    signout() {
+        return this.httpClient.post('http://localhost:3000/api/v1/user/signout',{})
+        .pipe(
+            tap(() => {
+                this.signedin$.next(false);
             })
         );
     }

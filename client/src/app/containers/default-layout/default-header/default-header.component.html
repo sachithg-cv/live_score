@@ -18,18 +18,18 @@
           Dashboard
         </a>
       </c-nav-item>
-      <c-nav-item>
+      <!-- <c-nav-item>
         <a cNavLink routerLink="/users" routerLinkActive="active">Users</a>
       </c-nav-item>
       <c-nav-item>
         <a cNavLink routerLink="/settings" routerLinkActive="active">
           Settings
         </a>
-      </c-nav-item>
+      </c-nav-item> -->
     </c-header-nav>
 
     <c-header-nav class="d-none d-lg-flex">
-      <c-nav-item>
+      <!-- <c-nav-item>
         <a routerLink="./" cNavLink>
           <svg cIcon name="cilBell" size="lg"></svg>
         </a>
@@ -38,14 +38,15 @@
         <a routerLink="./" cNavLink>
           <svg cIcon name="cilList" size="lg"></svg>
         </a>
-      </c-nav-item>
-      <c-nav-item>
-        <a routerLink="./" cNavLink>
+      </c-nav-item> -->
+      <c-nav-item *ngIf="signedIn$ | async">
+        <!-- <a routerLink="./" cNavLink>
           <svg cIcon name="cilEnvelopeOpen" size="lg"></svg>
-        </a>
+        </a> -->
+        <a>Hello {{(currentUser$ | async)}}</a>
       </c-nav-item>
     </c-header-nav>
-    <c-header-nav class="ms-3">
+    <c-header-nav class="ms-3" *ngIf="signedIn$ | async">
       <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
     </c-header-nav>
 
@@ -79,7 +80,7 @@
       <li>
         <h6 cDropdownHeader class="bg-light fw-semibold py-2">Account</h6>
       </li>
-      <li>
+      <!-- <li>
         <a routerLink="./" cDropdownItem>
           <svg cIcon class="me-2" name="cilBell"></svg>
           Updates
@@ -151,11 +152,11 @@
       </li>
       <li>
         <hr cDropdownDivider/>
-      </li>
+      </li> -->
       <li>
-        <a routerLink="./" cDropdownItem>
+        <a routerLink="/signout" cDropdownItem>
           <svg cIcon class="me-2" name="cilLockLocked"></svg>
-          Lock Account
+          Signout
         </a>
       </li>
       <li></li>
