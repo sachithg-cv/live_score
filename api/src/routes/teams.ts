@@ -21,4 +21,10 @@ router.get('/', currentuser, requireAuth, async (req: Request, res: Response) =>
     res.status(200).send(teams);
 });
 
+router.get('/:teamId', currentuser, requireAuth, async (req: Request, res: Response) => {
+    const { teamId } = req.params;
+    const team = await Team.findById(teamId).exec();
+    res.status(200).send(team);
+});
+
 export {router as teamsRouter};
