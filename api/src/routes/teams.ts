@@ -16,4 +16,9 @@ router.post('/', currentuser, requireAuth, async (req: Request, res: Response) =
     res.status(201).send(team);
 });
 
+router.get('/', currentuser, requireAuth, async (req: Request, res: Response) => {
+    const teams = await Team.find({ isDeleted: false }).exec();
+    res.status(200).send(teams);
+});
+
 export {router as teamsRouter};
