@@ -186,6 +186,34 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "get team",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/teams/649ea579d65f5b8fb2f46616",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"teams",
+						"649ea579d65f5b8fb2f46616"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
