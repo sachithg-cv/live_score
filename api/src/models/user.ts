@@ -54,6 +54,7 @@ userSchema.pre('save', async function(done){
         const hashedPassword = await Password.toHash(this.get('password'));
         this.set('password', hashedPassword);
     }
+    done();
 });
 
 userSchema.statics.build = (attrs: UserAttrs) => {
