@@ -129,6 +129,36 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "create team",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"CSK\",\r\n    \"players\": [\r\n        {\r\n            \"firstName\":\"David\",\r\n            \"lastName\":\"Warner\",\r\n            \"gender\":\"Male\",\r\n            \"isCaptain\":true\r\n        },\r\n        {\r\n            \"firstName\":\"Mike\",\r\n            \"lastName\":\"Hussey\",\r\n            \"gender\":\"Male\"\r\n        },\r\n        {\r\n            \"firstName\":\"Shane\",\r\n            \"lastName\":\"Watson\",\r\n            \"gender\":\"Male\"\r\n        },\r\n        {\r\n            \"firstName\":\"David\",\r\n            \"lastName\":\"Hussey\",\r\n            \"gender\":\"Male\"\r\n        },\r\n        {\r\n            \"firstName\":\"Michell\",\r\n            \"lastName\":\"Marsh\",\r\n            \"gender\":\"Male\"\r\n        },\r\n        {\r\n            \"firstName\":\"Steve\",\r\n            \"lastName\":\"Smith\",\r\n            \"gender\":\"Male\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/teams",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"teams"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
