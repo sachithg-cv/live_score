@@ -1,0 +1,5 @@
+<p>Team create</p>
+
+<app-player-create (newPlayerEvent)="addPlayer($event)"></app-player-create>
+
+<app-player-list [players]="players" (removePlayerEvent)="removePlayer($event)" (editPlayerEvent)="editPlayer($event)"></app-player-list>
