@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
-export interface Player{
-    firstName: string;
-    lastName: string;
-    gender: string;
-    isCaptain: boolean;
-}
+import { Player } from '../player.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UUID } from 'angular2-uuid';
+import { Router } from '@angular/router';
+import { TeamService } from '../team.service';
 
 @Component({
   selector: 'app-team-create',
@@ -16,22 +14,74 @@ export class TeamCreateComponent implements OnInit {
 
     players:Player[] = [];
 
-    constructor() {}
+    teamForm = new FormGroup({
+        id: new FormControl('', [ Validators.required ]),
+        name: new FormControl('', [ Validators.required ]),
+        players: new FormControl<Player[]>([], [ Validators.required ]),
+    });
+
+    constructor(private router: Router, private teamService:TeamService) {}
 
     ngOnInit(): void {
     }
 
     addPlayer(newPlayer: Player) {
-        this.players.push(newPlayer);
+        const index = this.players.findIndex((player)=> player.id === newPlayer.id);
+        if (index < 0) {
+            this.players.push(newPlayer);
+        } else {
+            this.players[index] = newPlayer;
+        }
     }
 
-    removePlayer(index: number) :void {
-        console.log(index);
-        const newPlayers = this.players.filter((_,i) => i != index);
+    removePlayer(id: string) :void {
+        const newPlayers = this.players.filter((player) => player.id !== id);
         this.players = newPlayers;
     }
 
-    editPlayer(index: number) :void {
-        console.log(index);
+    submitTeam(): void {
+        if (this.players.length === 0) {
+            this.teamForm.setErrors({
+                noPlayers: true
+            });
+            return;
+        }
+
+        let teamId = this.teamForm.get('id')?.value;
+        if (teamId === '') {
+            this.teamForm.patchValue({
+                id: UUID.UUID()
+            });
+        }
+
+        this.teamForm.patchValue({
+            players: this.players
+        });
+
+        if (this.teamForm.invalid) {
+            return;
+        }
+        const {name, players} = this.teamForm.value;
+        this.teamService.submitTeam({
+            name: name as string,
+            players: players as Player[]
+        }).subscribe((data) => {
+            console.log(data);
+            this.resetForm();
+        })
+    }
+
+    cancel(): void{
+        this.router.navigateByUrl("/");
+    }
+
+    resetForm() : void{
+        this.players = [];
+
+        this.teamForm.reset({
+            id:'',
+            name:'',
+            players:[]
+        });
     }
 }

@@ -1,4 +1,4 @@
-<c-card>
+<c-card class="mb-3">
     <c-card-header>Add Player</c-card-header>
     <c-card-body class="p-4">
         <form cForm [formGroup]="playerForm" (ngSubmit)="addNewPlayer()">
@@ -36,7 +36,10 @@
                     <label cFormCheckLabel>Female</label>
                   </c-form-check>
             </div>
-            <button type="submit" cButton color="success">Add Player</button>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+              <button type="button" (click)="resetForm()" cButton color="danger">Cancel</button>
+              <button type="submit" cButton color="success">Add Player</button>
+            </div>
           </form>
     </c-card-body>
 </c-card>

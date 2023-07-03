@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
-import { Player } from '../team-create/team-create.component';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Player, PlayerService } from '../player.service'
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-player-list',
@@ -9,25 +9,20 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./player-list.component.scss']
 })
 export class PlayerListComponent implements OnInit {
-
     @Input() players!: Player[];
-    @Output() editPlayerEvent = new EventEmitter<number>();
-    @Output() removePlayerEvent = new EventEmitter<number>();
+    @Output() removePlayerEvent = new EventEmitter<string>();
     
-    constructor() {}
+    constructor(private playerService: PlayerService) {}
 
     ngOnInit(): void {
     
     }
 
     editPlayer(index: number) :void {
-        console.log("Edit Player", index);
-        this.editPlayerEvent.emit(index);
+        this.playerService.createPlayerSubject.next(this.players[index]);
     }
 
     removePlayer(index: number) :void {
-        console.log("Remove Player", index);
-        this.removePlayerEvent.emit(index);
+        this.removePlayerEvent.emit(this.players[index].id);
     }
-
 }

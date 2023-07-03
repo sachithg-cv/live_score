@@ -1,7 +1,7 @@
-<c-card>
+<c-card class="mb-3">
     <c-card-header>Players List</c-card-header>
     <c-card-body class="p-4">
-        <table cTable [responsive]="true" *ngIf="players.length > 0">
+        <table cTable [responsive]="true" *ngIf="players.length > 0; else NoPlayers">
             <thead >
             <tr>
                 <th scope="col">#</th>
@@ -26,3 +26,7 @@
           </table>
     </c-card-body>
 </c-card>
+
+<ng-template #NoPlayers>
+    No players found. Please add players.
+</ng-template>
