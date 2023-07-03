@@ -35,7 +35,6 @@ export class PlayerCreateComponent implements OnInit {
     }
 
     addNewPlayer() {
-        debugger;
         let playerId = this.playerForm.get('id')?.value;
         if (playerId === '') {
             this.playerForm.patchValue({
