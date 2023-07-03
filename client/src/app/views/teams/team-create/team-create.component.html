@@ -1,0 +1,33 @@
+<c-card class="mb-3">
+    <c-card-header>Team</c-card-header>
+    <c-card-body class="p-4">
+        <form cForm [formGroup]="teamForm">
+            <div class="mb-3">
+              <label cLabel for="teamName">Name</label>
+              <input cFormControl id="teamName" type="text" formControlName="name"/>
+              <div *ngIf="teamForm.get('name')?.dirty && teamForm.get('name')?.touched && teamForm.get('name')?.errors">
+                <p *ngIf="teamForm.get('name')?.errors?.['required']">
+                    Value is required
+                </p>
+               </div>
+            </div>
+        </form>
+        <div *ngIf="teamForm.errors">
+            <p *ngIf="teamForm.errors['noPlayers']">
+                No players found. please add players
+            </p>
+        </div>
+    </c-card-body>
+</c-card>
+
+<app-player-create (newPlayerEvent)="addPlayer($event)"></app-player-create>
+
+<app-player-list [players]="players" (removePlayerEvent)="removePlayer($event)"></app-player-list>
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <button type="button"  (click)="cancel()" cButton color="danger">Cancel</button>
+    <button type="button" (click)="submitTeam()" cButton color="success">Submit Team</button>
+</div>
+
+{{ teamForm.value | json}}
+{{ teamForm.status}}

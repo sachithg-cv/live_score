@@ -1,0 +1,45 @@
+<c-card class="mb-3">
+    <c-card-header>Add Player</c-card-header>
+    <c-card-body class="p-4">
+        <form cForm [formGroup]="playerForm" (ngSubmit)="addNewPlayer()">
+            <div class="mb-3">
+              <label cLabel for="firstName">First Name</label>
+              <input cFormControl id="firstName" type="text" formControlName="firstName"/>
+              <div *ngIf="playerForm.get('firstName')?.dirty && playerForm.get('firstName')?.touched && playerForm.get('firstName')?.errors">
+                <p *ngIf="playerForm.get('firstName')?.errors?.['required']">
+                    Value is required
+                </p>
+               </div>
+            </div>
+            <div class="mb-3">
+              <label cLabel for="lastName">Last Name</label>
+              <input cFormControl id="lastName" type="text" formControlName="lastName"/>
+              <div *ngIf="playerForm.get('lastName')?.dirty && playerForm.get('lastName')?.touched && playerForm.get('lastName')?.errors">
+                <p *ngIf="playerForm.get('lastName')?.errors?.['required']">
+                    Value is required
+                </p>
+               </div>
+            </div>
+            <div class="mb-3">
+                <c-form-check [switch]="true">
+                    <input cFormCheckInput type="checkbox" formControlName="isCaptain"/>
+                    <label cFormCheckLabel>Is captain</label>
+                  </c-form-check>
+            </div>
+            <div class="mb-3">
+                <c-form-check>
+                    <input cFormCheckInput type="radio" value="Male" name="gender" formControlName="gender"/>
+                    <label cFormCheckLabel>Male</label>
+                  </c-form-check>
+                  <c-form-check>
+                    <input cFormCheckInput type="radio" value="Female" name="gender" formControlName="gender"/>
+                    <label cFormCheckLabel>Female</label>
+                  </c-form-check>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+              <button type="button" (click)="resetForm()" cButton color="danger">Cancel</button>
+              <button type="submit" cButton color="success">Add Player</button>
+            </div>
+          </form>
+    </c-card-body>
+</c-card>
