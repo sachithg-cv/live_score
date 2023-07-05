@@ -38,6 +38,12 @@ const routes: Routes = [
           import('./views/teams/teams.module').then((m) => m.TeamsModule)
       },
       {
+        path: 'matches',
+        canLoad: [AuthGuard],
+        loadChildren: () =>
+          import('./views/matches/matches.module').then((m) => m.MatchesModule)
+      },
+      {
         path: 'theme', 
         loadChildren: () =>
           import('./views/theme/theme.module').then((m) => m.ThemeModule)
