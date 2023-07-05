@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule} from '@angular/common/http';
 import { MatchesRoutingModule } from './matches-routing.module';
 import { MatchCreateComponent} from './match-create/match-create.component';
+import { MatchListComponent } from './match-list/match-list.component';
 import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
@@ -24,7 +25,8 @@ import { DropdownModule } from 'primeng/dropdown';
     DropdownModule
   ],
   declarations: [
-    MatchCreateComponent
+    MatchCreateComponent,
+    MatchListComponent
   ],
 })
 export class MatchesModule {

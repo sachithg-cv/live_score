@@ -1,0 +1,33 @@
+<c-card class="mb-3">
+    <c-card-header>Match List</c-card-header>
+    <c-card-body class="p-4">
+        <table cTable [responsive]="true" *ngIf="matches.length > 0; else NoMatches">
+            <thead >
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Team1</th>
+                <th scope="col">Team2</th>
+                <th scope="col">Status</th>
+                <th scope="col">Controls</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let match of matches; let i = index">
+                <th scope="row">{{i+1}}</th>
+                <td>{{match.team1}}</td>
+                <td>{{match.team2}}</td>
+                <td>{{match.status}}</td>
+                <td>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                        <button cButton size="sm" shape="rounded-pill" color="warning" (click)="viewMatch(i)">View</button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+          </table>
+    </c-card-body>
+</c-card>
+
+<ng-template #NoMatches>
+    No matches found. Please add matches.
+</ng-template>
