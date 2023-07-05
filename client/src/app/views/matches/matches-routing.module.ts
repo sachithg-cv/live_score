@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MatchCreateComponent } from './match-create/match-create.component';
+import { MatchListComponent } from './match-list/match-list.component';
 
 const routes: Routes = [
   {
@@ -18,7 +19,14 @@ const routes: Routes = [
         path: 'create',
         component: MatchCreateComponent,
         data: {
-          title: 'Match Create',
+          title: 'Create',
+        },
+      },
+      {
+        path: 'list',
+        component: MatchListComponent,
+        data: {
+          title: 'List',
         },
       },
     ],

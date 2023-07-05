@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {MatchCreate, MatchService} from '../match.service';
 import { TeamResponse, TeamService } from '../../teams/team.service';
-import { map } from 'rxjs';
+import { Subject, map, takeUntil } from 'rxjs';
 import { selectedTeamValidator} from '../validators/selected-team-validator';
 
 interface Team {
@@ -17,6 +17,7 @@ interface Team {
   styleUrls: ['./match-create.component.scss']
 })
 export class MatchCreateComponent implements OnInit {
+    notifier = new Subject<void>();
     teams: Team[] | undefined;
 
     matchCreateForm = new FormGroup({
@@ -39,7 +40,8 @@ export class MatchCreateComponent implements OnInit {
                     });
                 }
                 return [];
-            })
+            }),
+            takeUntil(this.notifier)
         ).subscribe((data) => {
             const val = [{name:'Select a Team', id:''}, ...data];
             this.teams = val;
@@ -65,6 +67,7 @@ export class MatchCreateComponent implements OnInit {
                     team1:'',
                     team2:''
                 });
+                this.matchService.createMatchSubject.next();
             },
             error: (err) => {
                 if(!err.status) {
@@ -82,6 +85,11 @@ export class MatchCreateComponent implements OnInit {
 
     cancel(): void{
         this.router.navigateByUrl("/");
+    }
+
+    ngOnDestroy() {
+        this.notifier.next();
+        this.notifier.complete();
     }
 
 }

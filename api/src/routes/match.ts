@@ -27,7 +27,7 @@ router.post('/', currentuser, requireAuth, async (req: Request, res: Response) =
 });
 
 router.get('/', currentuser, requireAuth, async (req: Request, res: Response) => {
-    const matches = await Match.find({ isDeleted: false }).exec();
+    const matches = await Match.find({ isDeleted: false }).populate('teams').exec();
     res.status(200).send(matches);
 });
 
@@ -35,7 +35,7 @@ router.get('/:matchId', currentuser, requireAuth, async (req: Request, res: Resp
     const { matchId } = req.params;
     const match = await Match.findById(matchId).populate('teams').exec();
     
-    res.status(200).send(match?.teams);
+    res.status(200).send(match);
 });
 
 export {router as matchRouter};
