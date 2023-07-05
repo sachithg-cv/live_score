@@ -1,0 +1,40 @@
+<c-card class="mb-3">
+    <c-card-header>Create Match</c-card-header>
+    <c-card-body class="p-4">
+        <form cForm [formGroup]="matchCreateForm" (ngSubmit)="createMatch()">
+            <div class="mb-3">
+              <label cLabel for="team1">Team 1</label>
+              <p-dropdown name="team1" [style]="{'width':'100%'}" formControlName="team1" [options]="teams" optionLabel="name" optionValue="id"></p-dropdown>
+              <div *ngIf="matchCreateForm.get('team1')?.touched && matchCreateForm.get('team1')?.errors">
+                <p *ngIf="matchCreateForm.get('team1')?.errors?.['required']">
+                    Value is required
+                </p>
+               </div>
+            </div>
+            <div class="mb-3">
+              <label cLabel for="team2">Team 2</label>
+              <p-dropdown name="team2" [style]="{'width':'100%'}" formControlName="team2" [options]="teams" optionLabel="name" optionValue="id"></p-dropdown>
+              <div *ngIf="matchCreateForm.get('team2')?.touched && matchCreateForm.get('team2')?.errors">
+                <p *ngIf="matchCreateForm.get('team2')?.errors?.['required']">
+                    Value is required
+                </p>
+               </div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+              <button type="button" (click)="cancel()" cButton color="danger">Cancel</button>
+              <button type="submit" cButton color="success">Create</button>
+            </div>
+            <div *ngIf="matchCreateForm.get('team1')?.touched && matchCreateForm.get('team2')?.touched && matchCreateForm.errors">
+                <p *ngIf="matchCreateForm.errors['sameTeamSelected']">
+                    Select two different teams
+                </p>
+                <p *ngIf="matchCreateForm.errors['noConnection']">
+                    No network connection
+                </p>
+                <p *ngIf="matchCreateForm.errors['unknownError']">
+                    Failed to Signup
+                </p>
+            </div>
+          </form>
+    </c-card-body>
+</c-card>

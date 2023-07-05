@@ -21,6 +21,8 @@ export class DefaultLayoutComponent implements OnInit{
           title: true, name: 'Teams'
         },{
           name: 'Create', url: '/teams/create', iconComponent: {name:'cil-puzzle'}
+        },{title: true, name: 'Matches'},{
+          name: 'Create', url: '/matches/create', iconComponent: {name:'cil-puzzle'}
         });
       }
     });
