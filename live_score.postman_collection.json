@@ -214,6 +214,208 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "create match",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"teams\": [\r\n        \"64a460f1763ffebe1472dfa7\",\r\n        \"64a46bd39c0b6adee1894b4a\"\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/matches",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"matches"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get match",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/matches/64a69c5a190941501ae8b660",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"matches",
+						"64a69c5a190941501ae8b660"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get matches",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/matches",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"matches"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "toss update",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"winningTeamName\":\"CSK\",  \"winningTeamId\":\"64a460f1763ffebe1472dfa7\", \"isBatFirst\": true, \"otherTeamId\":\"64a46bd39c0b6adee1894b4a\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/matches/64a6e55ebf1e1ea1401a8231/toss",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"matches",
+						"64a6e55ebf1e1ea1401a8231",
+						"toss"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "start first inning",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/matches/64a6fab81edd6e802042bcbe/firstInning/start",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"matches",
+						"64a6fab81edd6e802042bcbe",
+						"firstInning",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "end first inning",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/matches/64a704eadd8654f165fee510/firstInning/end",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"matches",
+						"64a704eadd8654f165fee510",
+						"firstInning",
+						"end"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "end second inning",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/matches/64a704eadd8654f165fee510/secondInning/end",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"matches",
+						"64a704eadd8654f165fee510",
+						"secondInning",
+						"end"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "start second inning",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/matches/64a6fab81edd6e802042bcbe/secondInning/start",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"matches",
+						"64a6fab81edd6e802042bcbe",
+						"secondInning",
+						"start"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

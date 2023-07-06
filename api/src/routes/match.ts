@@ -115,4 +115,30 @@ router.get('/:matchId/firstInning/end', currentuser, requireAuth, async (req: Re
     res.status(200).send(match);
 });
 
+router.get('/:matchId/secondInning/start', currentuser, requireAuth, async (req: Request, res: Response) => {
+    const { matchId } = req.params;
+
+    const match = await Match.findById(matchId).exec();
+    if (match) {
+        match.status="second_inning_started";
+        match.isLive = true;
+        await match.save();
+    }
+    
+    res.status(200).send(match);
+});
+
+router.get('/:matchId/secondInning/end', currentuser, requireAuth, async (req: Request, res: Response) => {
+    const { matchId } = req.params;
+
+    const match = await Match.findById(matchId).exec();
+    if (match) {
+        match.status="second_inning_ended";
+        match.isLive = false;
+        await match.save();
+    }
+    
+    res.status(200).send(match);
+});
+
 export {router as matchRouter};
