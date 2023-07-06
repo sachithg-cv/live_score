@@ -69,4 +69,16 @@ export class MatchService {
             `http://localhost:3000/api/v1/matches/${matchId}/firstInning/end`
         );
     }
+
+    startSecondInning(matchId: string){
+        return this.httpClient.get<any>(
+            `http://localhost:3000/api/v1/matches/${matchId}/secondInning/start`
+        );
+    }
+
+    endSecondInning(matchId: string){
+        return this.httpClient.get<any>(
+            `http://localhost:3000/api/v1/matches/${matchId}/secondInning/end`
+        );
+    }
 }
