@@ -89,4 +89,30 @@ router.post('/:matchId/toss', currentuser, requireAuth, async (req: Request, res
     res.status(200).send(match);
 });
 
+router.get('/:matchId/firstInning/start', currentuser, requireAuth, async (req: Request, res: Response) => {
+    const { matchId } = req.params;
+
+    const match = await Match.findById(matchId).exec();
+    if (match) {
+        match.status="first_inning_started";
+        match.isLive = true;
+        await match.save();
+    }
+    
+    res.status(200).send(match);
+});
+
+router.get('/:matchId/firstInning/end', currentuser, requireAuth, async (req: Request, res: Response) => {
+    const { matchId } = req.params;
+
+    const match = await Match.findById(matchId).exec();
+    if (match) {
+        match.status="first_inning_ended";
+        match.isLive = false;
+        await match.save();
+    }
+    
+    res.status(200).send(match);
+});
+
 export {router as matchRouter};

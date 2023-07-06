@@ -4,6 +4,7 @@
         <div *ngIf="match">
             {{match | json}}
             <app-match-toss-result (tossUpdateEvent)="updateToss($event)" [teams]="match.teams" [status]="match.status" [matchId]="match._id" [tossResult]="match.toss"></app-match-toss-result>
+            <app-match-start-first-inning [matchId]="match._id" [status]="match.status"></app-match-start-first-inning>
         </div>
     </c-card-body>
 </c-card>

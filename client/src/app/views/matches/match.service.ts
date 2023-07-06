@@ -57,4 +57,16 @@ export class MatchService {
             payload
         );
     }
+
+    startFirstInning(matchId: string){
+        return this.httpClient.get<any>(
+            `http://localhost:3000/api/v1/matches/${matchId}/firstInning/start`
+        );
+    }
+
+    endFirstInning(matchId: string){
+        return this.httpClient.get<any>(
+            `http://localhost:3000/api/v1/matches/${matchId}/firstInning/end`
+        );
+    }
 }
