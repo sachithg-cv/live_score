@@ -19,7 +19,9 @@
                 <td>{{match.status}}</td>
                 <td>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                        <button cButton size="sm" shape="rounded-pill" color="warning" (click)="viewMatch(i)">View</button>
+                        <a [routerLink]="['/matches/view',match.id]">
+                            <button cButton size="sm" shape="rounded-pill" color="warning">View</button>
+                        </a>
                     </div>
                 </td>
             </tr>

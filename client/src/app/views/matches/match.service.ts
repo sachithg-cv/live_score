@@ -14,6 +14,13 @@ export interface MatchResponse {
     isLive: boolean;
 }
 
+export interface TossUpdate {
+    winningTeamName: string;
+    winningTeamId: string; 
+    isBatFirst: boolean;
+    otherTeamId: string;
+}
+
 @Injectable({
     providedIn:'root'
 })
@@ -35,6 +42,19 @@ export class MatchService {
     getAll() {
         return this.httpClient.get<any>(
             `http://localhost:3000/api/v1/matches`
+        );
+    }
+
+    get(matchId: string) {
+        return this.httpClient.get<any>(
+            `http://localhost:3000/api/v1/matches/${matchId}`
+        );
+    }
+
+    updateTossResult(matchId: string, payload: TossUpdate) {
+        return this.httpClient.post<any>(
+            `http://localhost:3000/api/v1/matches/${matchId}/toss`,
+            payload
         );
     }
 }

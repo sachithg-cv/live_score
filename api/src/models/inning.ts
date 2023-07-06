@@ -4,6 +4,7 @@ interface InningDoc {
     batting: any;
     bowling: any;
     overs: OverDoc[];
+    currentOver?: number;
     isDeleted?: boolean;
     createdOn?: Date;
     updatedOn?: Date,
@@ -96,6 +97,11 @@ const inningSchema = new mongoose.Schema<InningDoc>({
         ref: 'Team',
     },
     overs: [overSchema],
+    currentOver: {
+        type: Number,
+        required: true,
+        default: 0
+    },
     isDeleted: {
         type: Boolean,
         required: true,

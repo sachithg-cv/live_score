@@ -1,0 +1,9 @@
+<c-card class="mb-3">
+    <c-card-header>Match List</c-card-header>
+    <c-card-body class="p-4">
+        <div *ngIf="match">
+            {{match | json}}
+            <app-match-toss-result (tossUpdateEvent)="updateToss($event)" [teams]="match.teams" [status]="match.status" [matchId]="match._id" [tossResult]="match.toss"></app-match-toss-result>
+        </div>
+    </c-card-body>
+</c-card>

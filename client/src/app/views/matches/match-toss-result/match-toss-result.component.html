@@ -1,0 +1,44 @@
+<form cForm [formGroup]="matchTossResultForm" (ngSubmit)="updateTossResult()" *ngIf="status==='scheduled';else tossSummary">
+    <div class="mb-3">
+      <label cLabel for="team">Toss won by</label>
+      <p-dropdown name="team" [style]="{'width':'100%'}" formControlName="winningTeamId" [options]="teamsFiltered" optionLabel="name" optionValue="id"></p-dropdown>
+      <div *ngIf="matchTossResultForm.get('winningTeamId')?.touched && matchTossResultForm.get('winningTeamId')?.errors">
+        <p *ngIf="matchTossResultForm.get('winningTeamId')?.errors?.['required']">
+            Value is required
+        </p>
+       </div>
+    </div>
+    <div class="mb-3">
+        <c-form-check>
+            <input cFormCheckInput type="radio" [value]="true" name="isBatFirst" formControlName="isBatFirst"/>
+            <label cFormCheckLabel>Bat first</label>
+          </c-form-check>
+          <c-form-check>
+            <input cFormCheckInput type="radio" [value]="false" name="isBatFirst" formControlName="isBatFirst"/>
+            <label cFormCheckLabel>Bat second</label>
+          </c-form-check>
+    </div>
+    
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+      <button type="button" (click)="cancel()" cButton color="danger">Cancel</button>
+      <button type="submit" cButton color="success">Submit</button>
+    </div>
+    <div *ngIf="matchTossResultForm.get('team')?.touched && matchTossResultForm.errors">
+        <p *ngIf="matchTossResultForm.errors['sameTeamSelected']">
+            Select two different teams
+        </p>
+        <p *ngIf="matchTossResultForm.errors['noConnection']">
+            No network connection
+        </p>
+        <p *ngIf="matchTossResultForm.errors['unknownError']">
+            Failed to Signup
+        </p>
+    </div>
+    {{ matchTossResultForm.value | json }}
+    {{ matchTossResultForm.status}}
+  </form>
+
+  <ng-template #tossSummary>
+    <h4>Toss results</h4>
+    <p>{{tossSummaryLine}}</p>
+  </ng-template>
