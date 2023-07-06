@@ -10,6 +10,7 @@ import { MatchListComponent } from './match-list/match-list.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { MatchViewComponent } from './match-view/match-view.component';
 import { MatchTossResultComponent } from './match-toss-result/match-toss-result.component';
+import { MatchStartFirstInningComponent } from './match-start-first-inning/match-start-first-inning.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -29,7 +30,8 @@ import { MatchTossResultComponent } from './match-toss-result/match-toss-result.
     MatchCreateComponent,
     MatchListComponent,
     MatchViewComponent,
-    MatchTossResultComponent
+    MatchTossResultComponent,
+    MatchStartFirstInningComponent
   ],
 })
 export class MatchesModule {
