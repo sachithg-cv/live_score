@@ -1,8 +1,14 @@
 import mongoose, { Schema } from "mongoose";
 
+interface Toss {
+    name: string;
+    id: string;
+    isBatFirst: boolean;
+}
 interface MatchDoc {
     roomId: string;
     teams: any[];
+    toss?: Toss;
     firstInning?: any;
     secondInning?: any;
     status: string;
@@ -24,6 +30,17 @@ const matchSchema = new mongoose.Schema<MatchDoc>({
             ref: 'Team',
         }
     ],
+    toss: {
+       name: {
+        type: String,
+       },
+       id: {
+        type: String,
+       },
+       isBatFirst: {
+        type: Boolean
+       }
+    },
     firstInning: {
         type: Schema.Types.ObjectId,
         ref: 'Inning',

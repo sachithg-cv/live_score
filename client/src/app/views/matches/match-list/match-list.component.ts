@@ -1,15 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { MatchResponse, MatchService} from '../match.service';
-import { TeamResponse, TeamService } from '../../teams/team.service';
 import { Subject, map, takeUntil } from 'rxjs';
-import { selectedTeamValidator} from '../validators/selected-team-validator';
-
-interface Team {
-    name: string;
-    id: string;
-}
 
 @Component({
   selector: 'app-match-list',

@@ -8,7 +8,8 @@ import { MatchesRoutingModule } from './matches-routing.module';
 import { MatchCreateComponent} from './match-create/match-create.component';
 import { MatchListComponent } from './match-list/match-list.component';
 import { DropdownModule } from 'primeng/dropdown';
-
+import { MatchViewComponent } from './match-view/match-view.component';
+import { MatchTossResultComponent } from './match-toss-result/match-toss-result.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -26,7 +27,9 @@ import { DropdownModule } from 'primeng/dropdown';
   ],
   declarations: [
     MatchCreateComponent,
-    MatchListComponent
+    MatchListComponent,
+    MatchViewComponent,
+    MatchTossResultComponent
   ],
 })
 export class MatchesModule {

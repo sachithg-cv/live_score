@@ -4,6 +4,7 @@ import { currentuser } from "../middlewares/current-user";
 import { Team } from "../models/team";
 import { Match } from "../models/match";
 import mongoose from "mongoose";
+import { Inning } from "../models/inning";
 
 const router = express.Router();
 
@@ -34,6 +35,56 @@ router.get('/', currentuser, requireAuth, async (req: Request, res: Response) =>
 router.get('/:matchId', currentuser, requireAuth, async (req: Request, res: Response) => {
     const { matchId } = req.params;
     const match = await Match.findById(matchId).populate('teams').exec();
+    
+    res.status(200).send(match);
+});
+
+router.post('/:matchId/toss', currentuser, requireAuth, async (req: Request, res: Response) => {
+    const { matchId } = req.params;
+    const { winningTeamName,  winningTeamId, isBatFirst, otherTeamId } = req.body;
+
+    const match = await Match.findById(matchId).populate('teams').exec();
+    if (match) {
+        // update toss info
+        match.toss = {name: winningTeamName, id: winningTeamId, isBatFirst: isBatFirst};
+
+        const tossWinningTeam = await Team.findById(winningTeamId).exec();
+        const otherTeam = await Team.findById(otherTeamId).exec();
+
+        let batFirst = null;
+        let batSecond = null;
+
+        if (isBatFirst) {
+            batFirst = tossWinningTeam;
+            batSecond = otherTeam;
+        } else {
+            batFirst = otherTeam;
+            batSecond = tossWinningTeam;
+        }
+
+        
+        //create first innings
+        const firstInning = new Inning({
+            batting: batFirst,
+            bowling: batSecond,
+        });
+
+        await firstInning.save();
+
+        //create second innings
+        const secondInning = new Inning({
+            batting: batSecond,
+            bowling: batFirst,
+        });
+
+        await secondInning.save();
+
+        match.firstInning = firstInning;
+        match.secondInning = secondInning;
+        match.status = "tossed";
+
+        await match.save();
+    }
     
     res.status(200).send(match);
 });
