@@ -12,9 +12,9 @@ interface InningDoc {
 
 interface OverDoc {
     over: number;
-    batsmanId: number;
+    batsmanId: string;
     batsmanName: string;
-    bowlerId: number;
+    bowlerId: string;
     bowlerName: string;
     runs: number;
     isLegal: boolean;
@@ -32,7 +32,7 @@ const overSchema = new mongoose.Schema<OverDoc>({
         required: true,
     },
     batsmanId: {
-        type: Number,
+        type: String,
         required: true,
     },
     batsmanName: {
@@ -40,7 +40,7 @@ const overSchema = new mongoose.Schema<OverDoc>({
         required: true,
     },
     bowlerId: {
-        type: Number,
+        type: String,
         required: true,
     },
     bowlerName: {

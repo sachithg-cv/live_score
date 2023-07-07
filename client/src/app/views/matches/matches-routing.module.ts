@@ -4,6 +4,7 @@ import { MatchCreateComponent } from './match-create/match-create.component';
 import { MatchListComponent } from './match-list/match-list.component';
 import { MatchViewComponent } from './match-view/match-view.component';
 import { MatchLiveListAdminComponent } from './match-live-list-admin/match-live-list-admin.component';
+import { MatchScoreComponent } from './match-score/match-score.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,13 @@ const routes: Routes = [
         component: MatchLiveListAdminComponent,
         data: {
           title: 'Live',
+        },
+      },
+      {
+        path: 'score/:matchId',
+        component: MatchScoreComponent,
+        data: {
+          title: 'View',
         },
       },
       

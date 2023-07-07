@@ -7,6 +7,7 @@ import socketServer from './messaging/server';
 import testNameSpace from './messaging/namespace/test-name-space';
 import cookieSession from 'cookie-session';
 import cors from 'cors';
+import matchNamespace from './messaging/namespace/match-name-space';
 
 const root = express();
 root.use(cors({
@@ -29,6 +30,7 @@ socketServer.initServer(httpServer,["http://localhost:4200"]);
 
 // create namespaces
 testNameSpace.initNameSpace(socketServer.createNameSpace("test"));
+matchNamespace.initNameSpace(socketServer.createNameSpace("match"));
 
 const start = async () => {
     try {

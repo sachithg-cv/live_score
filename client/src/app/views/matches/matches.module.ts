@@ -13,6 +13,7 @@ import { MatchTossResultComponent } from './match-toss-result/match-toss-result.
 import { MatchStartFirstInningComponent } from './match-start-first-inning/match-start-first-inning.component';
 import { MatchStartSecondInningComponent } from './match-start-second-inning/match-start-second-inning.component';
 import { MatchLiveListAdminComponent } from './match-live-list-admin/match-live-list-admin.component';
+import { MatchScoreComponent } from './match-score/match-score.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -35,7 +36,8 @@ import { MatchLiveListAdminComponent } from './match-live-list-admin/match-live-
     MatchTossResultComponent,
     MatchStartFirstInningComponent,
     MatchStartSecondInningComponent,
-    MatchLiveListAdminComponent
+    MatchLiveListAdminComponent,
+    MatchScoreComponent
   ],
 })
 export class MatchesModule {

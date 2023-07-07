@@ -5,6 +5,7 @@ import { Team } from "../models/team";
 import { Match } from "../models/match";
 import mongoose from "mongoose";
 import { Inning } from "../models/inning";
+import matchNamespace from '../messaging/namespace/match-name-space';
 
 const router = express.Router();
 
@@ -35,6 +36,237 @@ router.get('/', currentuser, requireAuth, async (req: Request, res: Response) =>
 router.get('/live', async (req: Request, res: Response) => {
     const matches = await Match.find({ isDeleted: false, isLive: true }).populate('teams', 'name').exec();
     res.status(200).send(matches);
+});
+
+router.post('/:inningId/deliveries', async (req: Request, res: Response) => {
+    const { inningId } = req.params;
+    const inning = await Inning.findById(inningId).exec();
+    const overs = inning?.overs;
+    overs?.push({
+        batsmanId:'64a460f1763ffebe1472dfac',
+        batsmanName: 'Michell Marsh',
+        bowlerId: '64a46bd39c0b6adee1894b4c',
+        bowlerName: 'Mike Hussey',
+        isLegal: true,
+        isWicket: false,
+        over: 1,
+        runs: 1,
+    });
+    await inning?.save();
+
+    // live score
+    const liveScore = await Inning.aggregate(
+        [
+            {
+              '$unwind': {
+                'path': '$overs', 
+                'includeArrayIndex': 'index', 
+                'preserveNullAndEmptyArrays': false
+              }
+            }, {
+              '$match': {
+                'isDeleted': {
+                  '$eq': false
+                }
+              }
+            }, {
+              '$project': {
+                'overs.runs': 1, 
+                'overs.extraRuns': 1, 
+                'wickets': {
+                  '$cond': {
+                    'if': {
+                      '$eq': [
+                        '$overs.isWicket', true
+                      ]
+                    }, 
+                    'then': 1, 
+                    'else': 0
+                  }
+                }, 
+                'legal': {
+                  '$cond': {
+                    'if': {
+                      '$eq': [
+                        '$overs.isLegal', true
+                      ]
+                    }, 
+                    'then': 1, 
+                    'else': 0
+                  }
+                }
+              }
+            }, {
+              '$group': {
+                '_id': null, 
+                'runs': {
+                  '$sum': '$overs.runs'
+                }, 
+                'extras': {
+                  '$sum': '$overs.extraRuns'
+                }, 
+                'wickets': {
+                  '$sum': '$wickets'
+                }, 
+                'balls': {
+                  '$sum': '$legal'
+                }
+              }
+            }
+          ]
+    ).exec();
+        
+    // batsman
+    const batsmen = await Inning.aggregate(
+        [
+            {
+              '$unwind': {
+                'path': '$overs', 
+                'includeArrayIndex': 'index', 
+                'preserveNullAndEmptyArrays': false
+              }
+            }, {
+              '$match': {
+                'isDeleted': {
+                  '$eq': false
+                }
+              }
+            }, {
+              '$sort': {
+                'createdOn': 1
+              }
+            }, {
+              '$project': {
+                'overs.runs': 1, 
+                'overs.batsmanId': 1, 
+                'overs.batsmanName': 1, 
+                'isOut': {
+                  '$cond': {
+                    'if': {
+                      '$eq': [
+                        '$overs.isWicket', true
+                      ]
+                    }, 
+                    'then': 1, 
+                    'else': 0
+                  }
+                }, 
+                'legal': {
+                  '$cond': {
+                    'if': {
+                      '$eq': [
+                        '$overs.isLegal', true
+                      ]
+                    }, 
+                    'then': 1, 
+                    'else': 0
+                  }
+                }
+              }
+            }, {
+              '$group': {
+                '_id': [
+                  '$overs.batsmanId', '$overs.batsmanName'
+                ], 
+                'runs': {
+                  '$sum': '$overs.runs'
+                }, 
+                'isOut': {
+                  '$sum': '$isOut'
+                }, 
+                'balls': {
+                  '$sum': '$legal'
+                }
+              }
+            }
+          ]
+    ).exec();
+        
+    // bowlers
+    const bowlers = await Inning.aggregate(
+        [
+            {
+              '$unwind': {
+                'path': '$overs', 
+                'includeArrayIndex': 'index', 
+                'preserveNullAndEmptyArrays': false
+              }
+            }, {
+              '$match': {
+                'isDeleted': {
+                  '$eq': false
+                }
+              }
+            }, {
+              '$sort': {
+                'createdOn': 1
+              }
+            }, {
+              '$project': {
+                'overs.runs': 1, 
+                'overs.extraRuns': 1, 
+                'overs.bowlerId': 1, 
+                'overs.bowlerName': 1, 
+                'wicket': {
+                  '$cond': {
+                    'if': {
+                      '$eq': [
+                        '$overs.isWicket', true
+                      ]
+                    }, 
+                    'then': 1, 
+                    'else': 0
+                  }
+                }, 
+                'legal': {
+                  '$cond': {
+                    'if': {
+                      '$eq': [
+                        '$overs.isLegal', true
+                      ]
+                    }, 
+                    'then': 1, 
+                    'else': 0
+                  }
+                }
+              }
+            }, {
+              '$group': {
+                '_id': [
+                  '$overs.bowlerId', '$overs.bowlerName'
+                ], 
+                'runs': {
+                  '$sum': '$overs.runs'
+                }, 
+                'wickets': {
+                  '$sum': '$wicket'
+                }, 
+                'balls': {
+                  '$sum': '$legal'
+                }, 
+                'extras': {
+                  '$sum': '$overs.extraRuns'
+                }
+              }
+            }
+          ]
+    ).exec();
+
+
+    //matchNamespace.getNameSpace().to(roomId).emit("greet", {message: 'Hello Admin'});
+    res.status(200).send({liveScore, batsmen, bowlers});
+});
+
+router.get('/:matchId/inning', currentuser, requireAuth, async (req: Request, res: Response) => {
+    const { matchId } = req.params;
+    const match = await Match.findById(matchId).exec();
+    let inning = null;
+    if (match?.status === "first_inning_started") {
+        inning = await Inning.findById(match.firstInning).populate('batting').populate('bowling').exec();
+    } else if (match?.status === "second_inning_started") {
+        inning = await Inning.findById(match.secondInning).populate('batting').populate('bowling').exec();
+    }
+    res.status(200).send(inning);
 });
 
 router.get('/:matchId', currentuser, requireAuth, async (req: Request, res: Response) => {

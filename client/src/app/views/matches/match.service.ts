@@ -87,4 +87,11 @@ export class MatchService {
             `http://localhost:3000/api/v1/matches/live`
         );
     }
+
+    submitDeliveries(req: any) {
+        return this.httpClient.post<any>(
+            'http://localhost:3000/api/v1/matches/deliveries',
+            req
+        );
+    }
 }

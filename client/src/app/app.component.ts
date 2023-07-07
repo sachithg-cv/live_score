@@ -38,7 +38,11 @@ export class AppComponent implements OnInit {
 
     //TO:DO remove this
     try {
-      const socket = io("http://localhost:3000/test");
+      const socket = io("http://localhost:3000/match",{
+        query:{
+          roomId:'12345'
+        }
+      });
 
       socket.on("connect", () => {
         console.log('is socket connected: ',socket.connected);
