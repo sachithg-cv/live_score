@@ -27,6 +27,9 @@ export class DefaultLayoutComponent implements OnInit{
           name: 'Create', url: '/matches/create', iconComponent: {name:'cil-puzzle'}
         },{
           name: 'List', url: '/matches/list', iconComponent: {name:'cil-puzzle'}
+        },
+        {
+          name: 'Live', url: '/matches/live-list-admin', iconComponent: {name:'cil-puzzle'}
         }
         );
       }
