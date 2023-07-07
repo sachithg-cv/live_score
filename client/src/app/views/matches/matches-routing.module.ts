@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { MatchCreateComponent } from './match-create/match-create.component';
 import { MatchListComponent } from './match-list/match-list.component';
 import { MatchViewComponent } from './match-view/match-view.component';
+import { MatchLiveListAdminComponent } from './match-live-list-admin/match-live-list-admin.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,14 @@ const routes: Routes = [
           title: 'View',
         },
       },
+      {
+        path: 'live-list-admin',
+        component: MatchLiveListAdminComponent,
+        data: {
+          title: 'Live',
+        },
+      },
+      
     ],
   },
 ];

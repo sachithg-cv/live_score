@@ -28,7 +28,12 @@ router.post('/', currentuser, requireAuth, async (req: Request, res: Response) =
 });
 
 router.get('/', currentuser, requireAuth, async (req: Request, res: Response) => {
-    const matches = await Match.find({ isDeleted: false }).populate('teams').exec();
+    const matches = await Match.find({ isDeleted: false }).populate('teams', 'name').exec();
+    res.status(200).send(matches);
+});
+
+router.get('/live', async (req: Request, res: Response) => {
+    const matches = await Match.find({ isDeleted: false, isLive: true }).populate('teams', 'name').exec();
     res.status(200).send(matches);
 });
 
