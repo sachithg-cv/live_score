@@ -20,7 +20,7 @@ class MatchNameSpace extends BaseNameSpace{
         this.ns.on("connection", (socket: any) => {
             const roomId = socket.roomId;
             socket.join(roomId);
-            this.ns.to(roomId).emit("greet", {message: `User added to the ${roomId}`});
+            this.ns.to(roomId).emit("live", {message: `User added to the ${roomId}`});
         });
     }
 

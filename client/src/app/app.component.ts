@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
         console.log(err);
       });
 
-      socket.on("greet", (session) => {
+      socket.on("live", (session) => {
         console.log('socket session created: ',session);
       });
 

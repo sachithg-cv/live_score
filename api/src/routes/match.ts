@@ -45,8 +45,8 @@ router.post('/:inningId/deliveries', async (req: Request, res: Response) => {
     overs?.push({
         batsmanId:'64a460f1763ffebe1472dfac',
         batsmanName: 'Michell Marsh',
-        bowlerId: '64a46bd39c0b6adee1894b4c',
-        bowlerName: 'Mike Hussey',
+        bowlerId: '64a460f1763ffebe1472dfad',
+        bowlerName: 'Steve Smith',
         isLegal: true,
         isWicket: false,
         over: 1,
@@ -253,20 +253,58 @@ router.post('/:inningId/deliveries', async (req: Request, res: Response) => {
     ).exec();
 
 
-    //matchNamespace.getNameSpace().to(roomId).emit("greet", {message: 'Hello Admin'});
+    matchNamespace.getNameSpace().to('12345').emit("live", {liveScore, batsmen, bowlers});
     res.status(200).send({liveScore, batsmen, bowlers});
 });
 
 router.get('/:matchId/inning', currentuser, requireAuth, async (req: Request, res: Response) => {
     const { matchId } = req.params;
     const match = await Match.findById(matchId).exec();
-    let inning = null;
+    
+    const response: any = {
+        roomId: match?.roomId,
+        status: match?.status
+    };
+
     if (match?.status === "first_inning_started") {
-        inning = await Inning.findById(match.firstInning).populate('batting').populate('bowling').exec();
+        const firstInning = await Inning.findById(match.firstInning).populate('batting').populate('bowling').exec();
+        const batting = {
+            id: firstInning?.batting._id,
+            name: firstInning?.batting.name,
+            players: firstInning?.batting.players
+        };
+
+        const bowling = {
+            id: firstInning?.bowling._id,
+            name: firstInning?.bowling.name,
+            players: firstInning?.bowling.players
+        };
+
+        response.firstInnings = {
+            id: firstInning?._id,
+            batting, bowling
+        };
+
     } else if (match?.status === "second_inning_started") {
-        inning = await Inning.findById(match.secondInning).populate('batting').populate('bowling').exec();
+        const secondInning = await Inning.findById(match.secondInning).populate('batting').populate('bowling').exec();
+        const batting = {
+            id: secondInning?.batting._id,
+            name: secondInning?.batting.name,
+            players: secondInning?.batting.players
+        };
+
+        const bowling = {
+            id: secondInning?.bowling._id,
+            name: secondInning?.bowling.name,
+            players: secondInning?.bowling.players
+        };
+
+        response.secondInnings = {
+            id: secondInning?._id,
+            batting, bowling
+        };
     }
-    res.status(200).send(inning);
+    res.status(200).send(response);
 });
 
 router.get('/:matchId', currentuser, requireAuth, async (req: Request, res: Response) => {
