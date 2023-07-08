@@ -416,6 +416,83 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "live matches",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/matches/live",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"matches",
+						"live"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "submit deliveries",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/innings/64a7c965eb272cdd75a7dffc/deliveries",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"innings",
+						"64a7c965eb272cdd75a7dffc",
+						"deliveries"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get innings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/matches/64a706a5d673735996cfe512/innings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"matches",
+						"64a706a5d673735996cfe512",
+						"innings"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
