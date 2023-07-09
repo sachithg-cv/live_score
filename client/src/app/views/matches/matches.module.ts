@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ButtonModule, CardModule, FormModule, GridModule, TableModule } from '@coreui/angular';
+import { ButtonGroupModule, ButtonModule, CardModule, FormModule, GridModule, TableModule } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -27,7 +27,8 @@ import { MatchScoreComponent } from './match-score/match-score.component';
     ReactiveFormsModule,
     FormsModule,
     TableModule,
-    DropdownModule
+    DropdownModule,
+    ButtonGroupModule
   ],
   declarations: [
     MatchCreateComponent,

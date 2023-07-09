@@ -51,32 +51,40 @@ router.get('/:matchId/innings', currentuser, requireAuth, async (req: Request, r
                 '_id': match?.firstInning
               }
             }, {
-              '$project': {
-                'overs': {
-                  '$filter': {
-                    'input': '$overs', 
-                    'as': 'over', 
-                    'cond': {
-                      '$or': [
-                        {
-                          '$eq': [
-                            '$$over.over', {
-                              '$add': [
-                                '$currentOver', 1
-                              ]
-                            }
+                '$project': {
+                  'overs': {
+                    '$filter': {
+                      'input': '$overs', 
+                      'as': 'over', 
+                      'cond': {
+                          '$and': [
+                              {
+                                  '$or': [
+                                      {
+                                        '$eq': [
+                                          '$$over.over', {
+                                            '$add': [
+                                              '$currentOver', 1
+                                            ]
+                                          }
+                                        ]
+                                      }, {
+                                        '$eq': [
+                                          '$$over.over', '$currentOver'
+                                        ]
+                                      }
+                                    ]
+                              }, {
+                                  '$eq': [
+                                      '$$over.isDeleted', false
+                                    ]
+                              }
                           ]
-                        }, {
-                          '$eq': [
-                            '$$over.over', '$currentOver'
-                          ]
-                        }
-                      ]
+                      }
                     }
                   }
                 }
               }
-            }
           ]
     ).exec();
 
@@ -97,32 +105,40 @@ router.get('/:matchId/innings', currentuser, requireAuth, async (req: Request, r
                 '_id': match?.secondInning
               }
             }, {
-              '$project': {
-                'overs': {
-                  '$filter': {
-                    'input': '$overs', 
-                    'as': 'over', 
-                    'cond': {
-                      '$or': [
-                        {
-                          '$eq': [
-                            '$$over.over', {
-                              '$add': [
-                                '$currentOver', 1
-                              ]
-                            }
+                '$project': {
+                  'overs': {
+                    '$filter': {
+                      'input': '$overs', 
+                      'as': 'over', 
+                      'cond': {
+                          '$and': [
+                              {
+                                  '$or': [
+                                      {
+                                        '$eq': [
+                                          '$$over.over', {
+                                            '$add': [
+                                              '$currentOver', 1
+                                            ]
+                                          }
+                                        ]
+                                      }, {
+                                        '$eq': [
+                                          '$$over.over', '$currentOver'
+                                        ]
+                                      }
+                                    ]
+                              }, {
+                                  '$eq': [
+                                      '$$over.isDeleted', false
+                                    ]
+                              }
                           ]
-                        }, {
-                          '$eq': [
-                            '$$over.over', '$currentOver'
-                          ]
-                        }
-                      ]
+                      }
                     }
                   }
                 }
               }
-            }
           ]
     ).exec();
     

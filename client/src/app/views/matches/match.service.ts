@@ -88,10 +88,9 @@ export class MatchService {
         );
     }
 
-    submitDeliveries(req: any) {
-        return this.httpClient.post<any>(
-            'http://localhost:3000/api/v1/matches/deliveries',
-            req
+    getInnings(matchId: string) {
+        return this.httpClient.get<any>(
+            `http://localhost:3000/api/v1/matches/${matchId}/innings`
         );
     }
 }

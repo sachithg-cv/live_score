@@ -1,2 +1,98 @@
-<p>Match score</p>
-{{match}}
+<div *ngIf="inning">
+    <c-card class="mb-3">
+        <c-card-header>{{matchTitle}}&nbsp;{{inningType}}</c-card-header>
+        <c-card-body class="p-4">
+            <form cForm [formGroup]="scoreSubmitForm">
+                <div class="mb-3">
+                    <span>{{inning.batting.name}}&nbsp;Batsmen</span>
+                    <c-form-check *ngFor="let player of inning.batting.players; let i = index">
+                        <input cFormCheckInput type="radio" [value]="player._id" name="batsman" formControlName="batsman"/>
+                        <label cFormCheckLabel>{{player.firstName +' '+ player.lastName}}</label>
+                      </c-form-check>
+                </div>
+                <div class="mb-3">
+                    <span>{{inning.bowling.name}}&nbsp;Bowlers</span>
+                    <c-form-check *ngFor="let player of inning.bowling.players; let i = index">
+                        <input cFormCheckInput type="radio" [value]="player._id" name="bowler" formControlName="bowler"/>
+                        <label cFormCheckLabel>{{player.firstName +' '+ player.lastName}}</label>
+                      </c-form-check>
+                </div>
+                <div class="mb-3">
+                    <span>Runs</span>
+                    <c-form-check *ngFor="let run of runs; let i = index">
+                        <input cFormCheckInput type="radio" [value]="run" name="runs" formControlName="runs"/>
+                        <label cFormCheckLabel>{{run}}</label>
+                      </c-form-check>
+                </div>
+                <div class="mb-3">
+                    <span>Illegal delivery</span>
+                    <c-form-check *ngFor="let illegalDelivery of illegalDeliveries; let i = index">
+                        <input cFormCheckInput type="radio" [value]="illegalDelivery" name="illegalDelivery" formControlName="illegalDelivery"/>
+                        <label cFormCheckLabel>{{illegalDelivery}}</label>
+                      </c-form-check>
+                </div>
+                <div class="mb-3">
+                    <span>Extras</span>
+                    <c-form-check *ngFor="let extra of extras; let i = index">
+                        <input cFormCheckInput type="radio" [value]="extra" name="extra" formControlName="extra"/>
+                        <label cFormCheckLabel>{{extra}}</label>
+                      </c-form-check>
+                </div>
+                <div class="mb-3">
+                    <span>Wicket</span>
+                    <c-form-check [switch]="true">
+                        <input cFormCheckInput type="checkbox" formControlName="wicket"/>
+                        <label cFormCheckLabel>Is wicket</label>
+                      </c-form-check>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <button type="submit" cButton color="success">Publish</button>
+                    <button type="button" cButton color="danger">Sync</button>
+                  </div>
+                <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                  <button type="button" (click)="cancel()" cButton color="danger">Cancel</button>
+                  <button type="submit" cButton color="success">Submit</button>
+                </div> -->
+                <!-- <div *ngIf="matchTossResultForm.get('team')?.touched && matchTossResultForm.errors">
+                    <p *ngIf="matchTossResultForm.errors['sameTeamSelected']">
+                        Select two different teams
+                    </p>
+                    <p *ngIf="matchTossResultForm.errors['noConnection']">
+                        No network connection
+                    </p>
+                    <p *ngIf="matchTossResultForm.errors['unknownError']">
+                        Failed to Signup
+                    </p>
+                </div>
+                {{ matchTossResultForm.value | json }}
+                {{ matchTossResultForm.status}} -->
+              </form>    
+        </c-card-body>
+    </c-card>
+    <c-card class="mb-3" *ngIf="currentOverList && currentOverList.length > 0">
+        <c-card-header>Current over - {{this.inning.currentOver + 1}}</c-card-header>
+        <c-card-body class="p-4">
+            <c-button-toolbar aria-label="Toolbar with button groups" role="group">
+                <c-button-group class="me-2" role="group" *ngFor="let currentBall of currentOverList; let i = index">
+                    <button type="button" cButton [color]="currentBall.isWicket? 'warning': currentBall.isLegal ? 'success':'danger'" (click)="loadDelivery(currentBall)">{{currentBall.isWicket? 'W': currentBall.runs + currentBall.extraRuns}}</button>
+                </c-button-group>
+            </c-button-toolbar>
+            <button type="submit" cButton color="primary">Complete</button>
+        </c-card-body>
+    </c-card>
+    <c-card class="mb-3" *ngIf="previousOverList && previousOverList.length > 0">
+        <c-card-header>Previous over - {{this.inning.currentOver}}</c-card-header>
+        <c-card-body class="p-4">
+            <c-button-toolbar aria-label="Toolbar with button groups" role="group">
+                <c-button-group class="me-2" role="group" *ngFor="let currentBall of previousOverList; let i = index">
+                    <button type="button" cButton [color]="currentBall.isWicket? 'warning': currentBall.isLegal ? 'success':'danger'" (click)="loadDelivery(currentBall)">{{currentBall.isWicket? 'W': currentBall.runs + currentBall.extraRuns}}</button>
+                </c-button-group>
+            </c-button-toolbar>
+        </c-card-body>
+    </c-card>
+    {{currentOverList|json}}
+    {{previousOverList|json}}
+    {{scoreSubmitForm.value | json}}
+    {{scoreSubmitForm.status}}
+    
+</div>

@@ -8,23 +8,29 @@ const router = express.Router();
 
 router.post('/:inningId/deliveries', currentuser, requireAuth, async (req: Request, res: Response) => {
     const { inningId } = req.params;
+    const { roomId } = req.body;
     const inning = await Inning.findById(inningId).exec();
-    const overs = inning?.overs;
-    overs?.push({
-        batsmanId:'64a460f1763ffebe1472dfac',
-        batsmanName: 'Michell Marsh',
-        bowlerId: '64a460f1763ffebe1472dfad',
-        bowlerName: 'Steve Smith',
-        isLegal: true,
-        isWicket: false,
-        over: 2,
-        runs: 6,
-    });
-    await inning?.save();
+    // const overs = inning?.overs;
+    // overs?.push({
+    //     batsmanId:'64a460f1763ffebe1472dfac',
+    //     batsmanName: 'Michell Marsh',
+    //     bowlerId: '64a460f1763ffebe1472dfad',
+    //     bowlerName: 'Steve Smith',
+    //     isLegal: true,
+    //     isWicket: true,
+    //     over: 2,
+    //     runs: 0,
+    // });
+    // await inning?.save();
 
     // live score
     const liveScore = await Inning.aggregate(
         [
+          {
+            '$match': {
+              '_id': inning?._id
+            }
+          },
             {
               '$unwind': {
                 'path': '$overs', 
@@ -33,7 +39,7 @@ router.post('/:inningId/deliveries', currentuser, requireAuth, async (req: Reque
               }
             }, {
               '$match': {
-                'isDeleted': {
+                'overs.isDeleted': {
                   '$eq': false
                 }
               }
@@ -87,6 +93,11 @@ router.post('/:inningId/deliveries', currentuser, requireAuth, async (req: Reque
     // batsman
     const batsmen = await Inning.aggregate(
         [
+          {
+            '$match': {
+              '_id': inning?._id
+            }
+          },
             {
               '$unwind': {
                 'path': '$overs', 
@@ -95,7 +106,7 @@ router.post('/:inningId/deliveries', currentuser, requireAuth, async (req: Reque
               }
             }, {
               '$match': {
-                'isDeleted': {
+                'overs.isDeleted': {
                   '$eq': false
                 }
               }
@@ -152,7 +163,12 @@ router.post('/:inningId/deliveries', currentuser, requireAuth, async (req: Reque
         
     // bowlers
     const bowlers = await Inning.aggregate(
-        [
+        [   
+          {
+            '$match': {
+              '_id': inning?._id
+            }
+          },
             {
               '$unwind': {
                 'path': '$overs', 
@@ -161,7 +177,7 @@ router.post('/:inningId/deliveries', currentuser, requireAuth, async (req: Reque
               }
             }, {
               '$match': {
-                'isDeleted': {
+                'overs.isDeleted': {
                   '$eq': false
                 }
               }
@@ -220,8 +236,65 @@ router.post('/:inningId/deliveries', currentuser, requireAuth, async (req: Reque
           ]
     ).exec();
 
-    matchNamespace.getNameSpace().to('12345').emit("live", {liveScore, batsmen, bowlers});
-    res.status(200).send({liveScore, batsmen, bowlers});
+    //last two overs
+    const lastTwoOvers:any = await Inning.aggregate(
+        [
+            {
+              '$match': {
+                '_id': inning?._id
+              }
+            }, {
+              '$project': {
+                'overs': {
+                  '$filter': {
+                    'input': '$overs', 
+                    'as': 'over', 
+                    'cond': {
+                        '$and': [
+                            {
+                                '$or': [
+                                    {
+                                      '$eq': [
+                                        '$$over.over', {
+                                          '$add': [
+                                            '$currentOver', 1
+                                          ]
+                                        }
+                                      ]
+                                    }, {
+                                      '$eq': [
+                                        '$$over.over', '$currentOver'
+                                      ]
+                                    }
+                                  ]
+                            }, {
+                                '$eq': [
+                                    '$$over.isDeleted', false
+                                  ]
+                            }
+                        ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+    ).exec();
+
+    matchNamespace.getNameSpace().to(roomId).emit("live", {
+        liveScore,
+        batsmen,
+        bowlers,
+        currentOver:inning?.currentOver,
+        lastOvers: lastTwoOvers && lastTwoOvers.length > 0 ? lastTwoOvers[0].overs: []
+    });
+    res.status(200).send({
+        liveScore,
+        batsmen,
+        bowlers,
+        currentOver:inning?.currentOver,
+        lastOvers: lastTwoOvers && lastTwoOvers.length > 0 ? lastTwoOvers[0].overs: []
+    });
 });
 
 export {router as inningRouter};
