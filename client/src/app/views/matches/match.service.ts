@@ -87,4 +87,10 @@ export class MatchService {
             `http://localhost:3000/api/v1/matches/live`
         );
     }
+
+    getInnings(matchId: string) {
+        return this.httpClient.get<any>(
+            `http://localhost:3000/api/v1/matches/${matchId}/innings`
+        );
+    }
 }

@@ -5,6 +5,7 @@ import { Team } from "../models/team";
 import { Match } from "../models/match";
 import mongoose from "mongoose";
 import { Inning } from "../models/inning";
+import matchNamespace from '../messaging/namespace/match-name-space';
 
 const router = express.Router();
 
@@ -32,9 +33,129 @@ router.get('/', currentuser, requireAuth, async (req: Request, res: Response) =>
     res.status(200).send(matches);
 });
 
-router.get('/live', async (req: Request, res: Response) => {
+router.get('/live', currentuser, requireAuth, async (req: Request, res: Response) => {
     const matches = await Match.find({ isDeleted: false, isLive: true }).populate('teams', 'name').exec();
     res.status(200).send(matches);
+});
+
+router.get('/:matchId/innings', currentuser, requireAuth, async (req: Request, res: Response) => {
+    const { matchId } = req.params;
+    const match = await Match.findById(matchId).exec();
+    
+    const firstInningQuery = Inning.findById(match?.firstInning).populate({ path: 'batting', select: ['players','name'] }).populate({ path: 'bowling', select: ['players','name'] });
+    const firstInning = await firstInningQuery.select('currentOver').exec();
+    const firstInningLastTwoOvers:any = await Inning.aggregate(
+        [
+            {
+              '$match': {
+                '_id': match?.firstInning
+              }
+            }, {
+                '$project': {
+                  'overs': {
+                    '$filter': {
+                      'input': '$overs', 
+                      'as': 'over', 
+                      'cond': {
+                          '$and': [
+                              {
+                                  '$or': [
+                                      {
+                                        '$eq': [
+                                          '$$over.over', {
+                                            '$add': [
+                                              '$currentOver', 1
+                                            ]
+                                          }
+                                        ]
+                                      }, {
+                                        '$eq': [
+                                          '$$over.over', '$currentOver'
+                                        ]
+                                      }
+                                    ]
+                              }, {
+                                  '$eq': [
+                                      '$$over.isDeleted', false
+                                    ]
+                              }
+                          ]
+                      }
+                    }
+                  }
+                }
+              }
+          ]
+    ).exec();
+
+    const firstInningDetails = {
+        id: firstInning?._id,
+        batting: firstInning?.batting,
+        bowling: firstInning?.bowling,
+        currentOver: firstInning?.currentOver,
+        lastOvers: firstInningLastTwoOvers && firstInningLastTwoOvers.length > 0 ? firstInningLastTwoOvers[0].overs: []
+    };
+    
+    const secondInningQuery = Inning.findById(match?.secondInning).populate({ path: 'batting', select: ['players','name'] }).populate({ path: 'bowling', select: ['players','name'] });
+    const secondInning = await secondInningQuery.select('currentOver').exec();
+    const secondInningLastTwoOvers:any = await Inning.aggregate(
+        [
+            {
+              '$match': {
+                '_id': match?.secondInning
+              }
+            }, {
+                '$project': {
+                  'overs': {
+                    '$filter': {
+                      'input': '$overs', 
+                      'as': 'over', 
+                      'cond': {
+                          '$and': [
+                              {
+                                  '$or': [
+                                      {
+                                        '$eq': [
+                                          '$$over.over', {
+                                            '$add': [
+                                              '$currentOver', 1
+                                            ]
+                                          }
+                                        ]
+                                      }, {
+                                        '$eq': [
+                                          '$$over.over', '$currentOver'
+                                        ]
+                                      }
+                                    ]
+                              }, {
+                                  '$eq': [
+                                      '$$over.isDeleted', false
+                                    ]
+                              }
+                          ]
+                      }
+                    }
+                  }
+                }
+              }
+          ]
+    ).exec();
+    
+    const secondInningDetails = {
+        id: secondInning?._id,
+        batting: secondInning?.batting,
+        bowling: secondInning?.bowling,
+        currentOver: secondInning?.currentOver,
+        lastOvers: secondInningLastTwoOvers && secondInningLastTwoOvers.length > 0 ? secondInningLastTwoOvers[0].overs: []
+    }
+
+    res.status(200).send({
+        firstInning: firstInningDetails,
+        secondInning: secondInningDetails,
+        roomId: match?.roomId,
+        status: match?.status
+    });
 });
 
 router.get('/:matchId', currentuser, requireAuth, async (req: Request, res: Response) => {
