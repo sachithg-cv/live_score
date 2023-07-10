@@ -181,11 +181,31 @@ export class MatchScoreComponent implements OnInit {
             illegalDelivery: 'None',
             wicket: false
           }    
-        )
+        );
       });
     }
 
     syncData(): void {
       this.getInnings();
+    }
+
+    endOver(): void {
+      this.matchService.endOver(this.inning.id)
+      .pipe(takeUntil(this.notifier))
+      .subscribe((data)=>{
+        console.log(data);
+        this.scoreSubmitForm.reset(
+          {
+            batsman:'',
+            bowler: '',
+            runs: 0,
+            extraType: 'None',
+            illegalDelivery: 'None',
+            wicket: false
+          }    
+        );
+        this.getInnings();
+
+      });
     }
 }
