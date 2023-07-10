@@ -14,6 +14,8 @@ import { MatchStartFirstInningComponent } from './match-start-first-inning/match
 import { MatchStartSecondInningComponent } from './match-start-second-inning/match-start-second-inning.component';
 import { MatchLiveListAdminComponent } from './match-live-list-admin/match-live-list-admin.component';
 import { MatchScoreComponent } from './match-score/match-score.component';
+import { DialogModule } from 'primeng/dialog';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -28,7 +30,8 @@ import { MatchScoreComponent } from './match-score/match-score.component';
     FormsModule,
     TableModule,
     DropdownModule,
-    ButtonGroupModule
+    ButtonGroupModule,
+    DialogModule,
   ],
   declarations: [
     MatchCreateComponent,
