@@ -100,4 +100,10 @@ export class MatchService {
             payload
         );
     }
+
+    endOver(inning: string) {
+        return this.httpClient.get<any>(
+            `http://localhost:3000/api/v1/innings/${inning}/endover`
+        );
+    }
 }

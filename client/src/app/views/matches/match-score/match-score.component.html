@@ -80,7 +80,7 @@
                     <button type="button" cButton [color]="currentBall.isWicket? 'warning': currentBall.isLegal ? 'success':'danger'" (click)="loadDelivery(currentBall)">{{currentBall.isWicket? 'W': currentBall.runs + currentBall.extraRuns}}</button>
                 </c-button-group>
             </c-button-toolbar>
-            <button type="submit" cButton color="primary">Complete</button>
+            <button type="button" cButton color="primary" (click)="endOver()">Complete</button>
         </c-card-body>
     </c-card>
     <c-card class="mb-3" *ngIf="previousOverList && previousOverList.length > 0">

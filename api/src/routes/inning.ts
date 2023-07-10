@@ -9,19 +9,8 @@ const router = express.Router();
 router.post('/:inningId/deliveries', currentuser, requireAuth, async (req: Request, res: Response) => {
     const { inningId } = req.params;
     const { roomId, delivery } = req.body;
-    console.log(roomId);
     const inning = await Inning.findById(inningId).exec();
     const overs = inning?.overs;
-    // overs?.push({
-    //     batsmanId:'64a460f1763ffebe1472dfac',
-    //     batsmanName: 'Michell Marsh',
-    //     bowlerId: '64a460f1763ffebe1472dfad',
-    //     bowlerName: 'Steve Smith',
-    //     isLegal: true,
-    //     isWicket: true,
-    //     over: 2,
-    //     runs: 0,
-    // });
     overs?.push(delivery);
     await inning?.save();
 
@@ -298,6 +287,16 @@ router.post('/:inningId/deliveries', currentuser, requireAuth, async (req: Reque
         currentOver:inning?.currentOver,
         lastOvers: lastTwoOvers && lastTwoOvers.length > 0 ? lastTwoOvers[0].overs: []
     });
+});
+
+router.get('/:inningId/endover', currentuser, requireAuth, async (req, res) => {
+  const { inningId } = req.params;
+  const inning = await Inning.findById(inningId).exec();
+  let currentOver =inning!.currentOver ? inning!.currentOver: 0;
+  currentOver++;
+  inning!.currentOver = currentOver;
+  await inning?.save();
+  res.status(200).send({currentOver: inning?.currentOver});
 });
 
 export {router as inningRouter};
