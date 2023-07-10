@@ -8,9 +8,10 @@ const router = express.Router();
 
 router.post('/:inningId/deliveries', currentuser, requireAuth, async (req: Request, res: Response) => {
     const { inningId } = req.params;
-    const { roomId } = req.body;
+    const { roomId, delivery } = req.body;
+    console.log(roomId);
     const inning = await Inning.findById(inningId).exec();
-    // const overs = inning?.overs;
+    const overs = inning?.overs;
     // overs?.push({
     //     batsmanId:'64a460f1763ffebe1472dfac',
     //     batsmanName: 'Michell Marsh',
@@ -21,7 +22,8 @@ router.post('/:inningId/deliveries', currentuser, requireAuth, async (req: Reque
     //     over: 2,
     //     runs: 0,
     // });
-    // await inning?.save();
+    overs?.push(delivery);
+    await inning?.save();
 
     // live score
     const liveScore = await Inning.aggregate(
@@ -282,6 +284,7 @@ router.post('/:inningId/deliveries', currentuser, requireAuth, async (req: Reque
     ).exec();
 
     matchNamespace.getNameSpace().to(roomId).emit("live", {
+        type: "live_score",
         liveScore,
         batsmen,
         bowlers,

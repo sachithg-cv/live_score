@@ -21,6 +21,7 @@ interface OverDoc {
     isWicket: boolean;
     extraRuns?: number;
     extraType?: string;
+    illegalType?:string;
     isDeleted?: boolean;
     createdOn?: Date;
     updatedOn?: Date,
@@ -67,6 +68,11 @@ const overSchema = new mongoose.Schema<OverDoc>({
         default: 0
     },
     extraType: {
+        type: String,
+        required: false,
+        default: "None"
+    },
+    illegalType: {
         type: String,
         required: false,
         default: "None"
