@@ -2,16 +2,17 @@
     <c-card class="mb-3">
         <c-card-header>{{matchTitle}}&nbsp;{{inningType}}</c-card-header>
         <c-card-body class="p-4">
-            <form cForm [formGroup]="scoreSubmitForm" (ngSubmit)="submitDelivery()">
+            <span *ngIf="isEditingMode">*Currently in the editing mode</span>
+            <form cForm [formGroup]="scoreSubmitForm" (ngSubmit)="submitForm()">
                 <div class="mb-3">
                     <span>{{inning.batting.name}}&nbsp;Batsmen</span>
                     <span *ngIf="scoreSubmitForm.get('batsman')?.errors?.['required']">*required</span>
                     <c-form-check *ngFor="let player of inning.batting.players; let i = index">
                         <input cFormCheckInput type="radio" [value]="player._id" name="batsman" formControlName="batsman"/>
                         <label cFormCheckLabel>{{player.firstName +' '+ player.lastName}}</label>
-                      </c-form-check>
+                    </c-form-check>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3" *ngIf="!isEditingMode">
                     <span>{{inning.bowling.name}}&nbsp;Bowlers</span>
                     <span *ngIf="scoreSubmitForm.get('bowler')?.errors?.['required']">*required</span>
                     <c-form-check *ngFor="let player of inning.bowling.players; let i = index">
@@ -49,8 +50,9 @@
                       </c-form-check>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                    <button type="submit" cButton color="success">Publish</button>
-                    <button type="button" cButton (click)="syncData()" color="danger">Sync</button>
+                    <button type="submit" cButton color="success">{{isEditingMode? 'Update':'Publish'}}</button>
+                    <button type="button" cButton *ngIf="!isEditingMode" (click)="syncData()" color="danger">Sync</button>
+                    <button type="button" cButton *ngIf="isEditingMode" (click)="cancelEditDelivery()" color="danger">Cancel</button>
                   </div>
                 <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                   <button type="button" (click)="cancel()" cButton color="danger">Cancel</button>
@@ -97,3 +99,11 @@
     {{scoreSubmitForm.status}}
     
 </div>
+
+<p-dialog header="Header" [(visible)]="editDeliveryModalVisible" [modal]="true" [style]="{ width: '80vw' }" [draggable]="false">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <button type="button" cButton color="danger" (click)="removeDelivery()" [disabled]="editingDelivery && editingDelivery.over===inning.currentOver">Remove</button>
+        <button type="button" cButton (click)="loadEditDelivery()" color="success">Edit</button>
+        <button type="button" cButton (click)="closeEditDeliveryDialog()" color="warning">Cancel</button>
+      </div>
+</p-dialog>

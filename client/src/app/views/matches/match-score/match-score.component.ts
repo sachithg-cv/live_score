@@ -25,6 +25,10 @@ export class MatchScoreComponent implements OnInit {
     previousOverList:any;
     settings:any = { "Wide":5, "No ball": 4};
     room:any;
+    editDeliveryModalVisible: boolean = false;
+    editingDelivery:any = null;
+    isEditingMode: boolean = false;
+    currentBowler:string = '';
 
     scoreSubmitForm = new FormGroup({
       batsman: new FormControl('',Validators.required),
@@ -119,16 +123,32 @@ export class MatchScoreComponent implements OnInit {
       const currentOver = previousOver + 1;
       this.currentOverList = lastOvers.filter((over:any)=> over.over === currentOver);
       this.previousOverList = lastOvers.filter((over:any)=> over.over === previousOver);
+
+      if(this.currentOverList && this.currentOverList.length > 0) {
+        this.currentBowler = this.currentOverList[0]?.bowlerId;
+        this.scoreSubmitForm.get("bowler")?.setValue(this.currentBowler as string);
+      }
     }
 
     loadDelivery(delivery:any) {
       console.log(delivery);
+      this.editingDelivery = delivery;
+      this.editDeliveryModalVisible = true;
     }
 
-    submitDelivery(): void {
+    submitForm(): void {
       if (this.scoreSubmitForm.invalid) {
         return;
       }
+
+      if (this.isEditingMode) {
+        this.submitEditedDelivery();
+      } else {
+        this.submitDelivery();
+      }
+    }
+
+    submitDelivery(): void {
 
       const {batsman,bowler,runs,illegalDelivery,extraType,wicket} = this.scoreSubmitForm.value;
 
@@ -172,10 +192,11 @@ export class MatchScoreComponent implements OnInit {
       this.matchService.submitDelivery(this.inning.id,req)
       .pipe(takeUntil(this.notifier))
       .subscribe((_)=>{
+        this.currentBowler = bowler as string;
         this.scoreSubmitForm.reset(
           {
             batsman:'',
-            bowler: bowler,
+            bowler: this.currentBowler,
             runs: 0,
             extraType: 'None',
             illegalDelivery: 'None',
@@ -194,10 +215,11 @@ export class MatchScoreComponent implements OnInit {
       .pipe(takeUntil(this.notifier))
       .subscribe((data)=>{
         console.log(data);
+        this.currentBowler = '';
         this.scoreSubmitForm.reset(
           {
             batsman:'',
-            bowler: '',
+            bowler: this.currentBowler,
             runs: 0,
             extraType: 'None',
             illegalDelivery: 'None',
@@ -207,5 +229,100 @@ export class MatchScoreComponent implements OnInit {
         this.getInnings();
 
       });
+    }
+
+    removeDelivery(): void {
+
+      this.closeEditDeliveryDialog();
+    }
+
+    loadEditDelivery(): void {
+      this.isEditingMode = true;
+      const {batsmanId, bowlerId, extraType, illegalType, runs, isWicket} = this.editingDelivery;
+
+      this.scoreSubmitForm.setValue({
+        batsman: batsmanId,
+        bowler: bowlerId,
+        extraType: extraType,
+        illegalDelivery: illegalType,
+        runs: runs,
+        wicket: isWicket
+      });
+      this.closeEditDeliveryDialog();
+    }
+
+    submitEditedDelivery(): void {
+      const {batsman,bowler,runs,illegalDelivery,extraType,wicket} = this.scoreSubmitForm.value;
+
+      const batsmanDetails = this.inning.batting.players.find((data:any)=> data._id === batsman);
+      const bowlerDetails = this.inning.bowling.players.find((data:any)=> data._id === bowler);
+
+      const delivery: any = {
+        batsmanId:batsmanDetails._id,
+        batsmanName: `${batsmanDetails.firstName} ${batsmanDetails.lastName}`,
+        bowlerId: bowlerDetails._id,
+        bowlerName: `${bowlerDetails.firstName} ${bowlerDetails.lastName}`,
+        runs:0,
+        isLegal: true,
+        illegalType: "None",
+        isWicket: wicket,
+        extraRuns:0,
+        extraType:"None",
+      }
+
+      if (illegalDelivery && (illegalDelivery === "Wide" || illegalDelivery ==="No ball")){
+        delivery.isLegal = false;
+        delivery.extraRuns += this.settings[illegalDelivery]
+        delivery.illegalType = illegalDelivery;
+      }
+
+      if (extraType && (extraType==="Byes" || extraType==="Leg Byes")) {
+        delivery.extraRuns += runs;
+        delivery.extraType = extraType;
+      } else {
+        delivery.runs = runs;
+      }
+
+      const req = {
+        roomId: this.roomId,
+        delivery
+      }
+      console.log(req);
+
+      this.matchService.editDelivery(this.inning.id,this.editingDelivery._id,req)
+      .pipe(takeUntil(this.notifier))
+      .subscribe((_)=>{
+        this.isEditingMode = false;
+        this.editingDelivery = null;
+        this.scoreSubmitForm.reset(
+          {
+            batsman:'',
+            bowler: this.currentBowler,
+            runs: 0,
+            extraType: 'None',
+            illegalDelivery: 'None',
+            wicket: false
+          }    
+        );
+      });
+    }
+
+    cancelEditDelivery() {
+      this.isEditingMode = false;
+      this.editingDelivery = null;
+      this.scoreSubmitForm.reset(
+        {
+          batsman:'',
+          bowler: this.currentBowler,
+          runs: 0,
+          extraType: 'None',
+          illegalDelivery: 'None',
+          wicket: false
+        }    
+      );
+    }
+
+    closeEditDeliveryDialog():void {
+      this.editDeliveryModalVisible = false;
     }
 }
