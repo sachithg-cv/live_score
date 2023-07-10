@@ -93,4 +93,11 @@ export class MatchService {
             `http://localhost:3000/api/v1/matches/${matchId}/innings`
         );
     }
+
+    submitDelivery(inningId:string, payload:any) {
+        return this.httpClient.post<any>(
+            `http://localhost:3000/api/v1/innings/${inningId}/deliveries`,
+            payload
+        );
+    }
 }

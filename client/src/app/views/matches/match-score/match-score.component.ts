@@ -19,17 +19,19 @@ export class MatchScoreComponent implements OnInit {
     inningType!:string;
     matchTitle!:string;
     runs: number[] = [0,1,2,3,4,5,6,7,8,9,10];
-    illegalDeliveries: string[] = ["Wide", "No ball"];
-    extras: string[] = ["Byes", "Leg Byes"];
+    illegalDeliveries: string[] = ["None","Wide", "No ball"];
+    extrasType: string[] = ["None","Byes", "Leg Byes"];
     currentOverList: any;
     previousOverList:any;
+    settings:any = { "Wide":5, "No ball": 4};
+    room:any;
 
     scoreSubmitForm = new FormGroup({
       batsman: new FormControl('',Validators.required),
       bowler: new FormControl('',Validators.required),
-      runs: new FormControl('',Validators.required),
-      illegalDelivery: new FormControl(''),
-      extra: new FormControl(''),
+      runs: new FormControl(0,Validators.required),
+      illegalDelivery: new FormControl('None'),
+      extraType: new FormControl('None'),
       wicket: new FormControl(false),
     });
 
@@ -49,33 +51,40 @@ export class MatchScoreComponent implements OnInit {
     ngOnDestroy() {
         this.notifier.next();
         this.notifier.complete();
+        if (this.room && this.room.connected) {
+          this.room.disconnect();
+        }
     }
 
     joinRoom(): void {
         try {
-            const socket = io("http://localhost:3000/match",{
+          if (this.room && this.room.connected) {
+            console.log('already joined the room');
+            return;
+          }
+            this.room = io("http://localhost:3000/match",{
               query:{
                 roomId: this.roomId
               }
             });
       
-            socket.on("connect", () => {
-              console.log('is socket connected: ',socket.connected);
+            this.room.on("connect", () => {
+              console.log('is socket connected: ',this.room.connected);
             });
       
-            socket.on("disconnect", () => {
-              console.log('is socket disconnected: ',socket.connected);
+            this.room.on("disconnect", () => {
+              console.log('is socket disconnected: ',this.room.connected);
             });
       
-            socket.on("connect_error", (err) => {
+            this.room.on("connect_error", (err:any) => {
               console.log('socket connection error');
               console.log(err);
             });
       
-            socket.on("live", (session) => {
-              console.log('socket session created: ',session);
-              
-              if (session && session["currentOver"] && session["lastOvers"]) {
+            this.room.on("live", (session: any) => {
+              console.log('message recieved: ',session);
+
+              if (session && session["type"] && session["type"]==="live_score") {
                 const {currentOver, lastOvers } = session;
                 this.mapOvers(currentOver, lastOvers);
               }
@@ -101,10 +110,6 @@ export class MatchScoreComponent implements OnInit {
             this.matchTitle = `${this.inning?.batting.name} vs ${this.inning?.bowling.name}`;
             this.roomId = data?.roomId;
             this.mapOvers(this.inning.currentOver, this.inning.lastOvers);
-            // const previousOver = this.inning.currentOver;
-            // const currentOver = previousOver + 1;
-            // this.currentOverList = this.inning.lastOvers.filter((over:any)=> over.over === currentOver);
-            // this.previousOverList = this.inning.lastOvers.filter((over:any)=> over.over === previousOver);
             this.joinRoom();
         });
     }
@@ -118,5 +123,69 @@ export class MatchScoreComponent implements OnInit {
 
     loadDelivery(delivery:any) {
       console.log(delivery);
+    }
+
+    submitDelivery(): void {
+      if (this.scoreSubmitForm.invalid) {
+        return;
+      }
+
+      const {batsman,bowler,runs,illegalDelivery,extraType,wicket} = this.scoreSubmitForm.value;
+
+      const currentOver = this.inning.currentOver + 1;
+      const batsmanDetails = this.inning.batting.players.find((data:any)=> data._id === batsman);
+      const bowlerDetails = this.inning.bowling.players.find((data:any)=> data._id === bowler);
+
+      const delivery: any = {
+        over: currentOver,
+        batsmanId:batsmanDetails._id,
+        batsmanName: `${batsmanDetails.firstName} ${batsmanDetails.lastName}`,
+        bowlerId: bowlerDetails._id,
+        bowlerName: `${bowlerDetails.firstName} ${bowlerDetails.lastName}`,
+        runs:0,
+        isLegal: true,
+        illegalType: "None",
+        isWicket: wicket,
+        extraRuns:0,
+        extraType:"None",
+      }
+
+      if (illegalDelivery && (illegalDelivery === "Wide" || illegalDelivery ==="No ball")){
+        delivery.isLegal = false;
+        delivery.extraRuns += this.settings[illegalDelivery]
+        delivery.illegalType = illegalDelivery;
+      }
+
+      if (extraType && (extraType==="Byes" || extraType==="Leg Byes")) {
+        delivery.extraRuns += runs;
+        delivery.extraType = extraType;
+      } else {
+        delivery.runs = runs;
+      }
+
+      const req = {
+        roomId:this.roomId,
+        delivery
+      }
+      console.log(req);
+
+      this.matchService.submitDelivery(this.inning.id,req)
+      .pipe(takeUntil(this.notifier))
+      .subscribe((_)=>{
+        this.scoreSubmitForm.reset(
+          {
+            batsman:'',
+            bowler: bowler,
+            runs: 0,
+            extraType: 'None',
+            illegalDelivery: 'None',
+            wicket: false
+          }    
+        )
+      });
+    }
+
+    syncData(): void {
+      this.getInnings();
     }
 }
