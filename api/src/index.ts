@@ -36,7 +36,9 @@ matchNamespace.initNameSpace(socketServer.createNameSpace("match"));
 
 const start = async () => {
     try {
-        await mongoose.connect("mongodb://localhost:27018/live-score", {
+        // TODO: move this to env 
+        // for local dev use this - mongodb://localhost:27018/live-score
+        await mongoose.connect("mongodb://mongodb_container:27017/live-score", {
             auth: {
                 username: 'root',
                 password: 'root'

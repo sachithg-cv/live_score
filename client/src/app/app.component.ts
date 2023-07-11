@@ -4,9 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
 import { Title } from '@angular/platform-browser';
-import { io } from 'socket.io-client';
 import { AuthService } from './views/auth/auth.service';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-root',

@@ -9,6 +9,33 @@ services:
       - 27018:27017
     volumes:
       - mongodb_data_container:/data/db
+  nginx:
+    depends_on:
+      - api
+      - client
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "8082:80"
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: ./api
+#    volumes:
+#      - /app/node_modules
+#      - ./api:/app
+  client:
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+#    volumes:
+#      - /app/node_modules
+#      - ./client:/app
 
 volumes:
   mongodb_data_container:

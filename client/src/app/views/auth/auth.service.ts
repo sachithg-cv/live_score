@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap} from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 interface SingupRequest {
     email: string;
@@ -28,6 +29,7 @@ interface SinginResponse {
 export class AuthService {
     signedin$ = new BehaviorSubject<any>(null);
     currentUser$ = new BehaviorSubject<any>(null);
+    baseUrl = environment.apiUrl;
 
     constructor(private httpClient: HttpClient) {
 
@@ -35,7 +37,7 @@ export class AuthService {
 
     signup(credentials: SingupRequest) {
         return this.httpClient.post<SingupResponse>(
-            'http://localhost:3000/api/v1/user/signup',
+            `${this.baseUrl}/user/signup`,
             credentials
         ).pipe(
             tap((data) => {
@@ -48,7 +50,7 @@ export class AuthService {
     }
 
     getCurrentUser() {
-        return this.httpClient.get<any>('http://localhost:3000/api/v1/user/currentuser')
+        return this.httpClient.get<any>(`${this.baseUrl}/user/currentuser`)
         .pipe(
             tap(({currentuser}) => {
                 if (currentuser && currentuser.id && currentuser.email) {
@@ -64,7 +66,7 @@ export class AuthService {
 
     signin(credentials: SinginRequest) {
         return this.httpClient.post<SinginResponse>(
-            'http://localhost:3000/api/v1/user/signin',
+            `${this.baseUrl}/user/signin`,
             credentials
         ).pipe(
             tap((data) => {
@@ -77,7 +79,7 @@ export class AuthService {
     }
 
     signout() {
-        return this.httpClient.post('http://localhost:3000/api/v1/user/signout',{})
+        return this.httpClient.post(`${this.baseUrl}/user/signout`,{})
         .pipe(
             tap(() => {
                 this.signedin$.next(false);
