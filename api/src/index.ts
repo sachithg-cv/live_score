@@ -18,7 +18,9 @@ root.use(cors({
 
 root.use(json());
 root.use(cookieSession({
-    signed: false
+    signed: false,
+    // set this true for https
+    secure:false
 }));
 
 root.use("/api/v1", appRoutes);
