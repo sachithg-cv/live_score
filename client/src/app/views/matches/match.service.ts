@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 export interface MatchCreate {
     teams:string[];
@@ -27,6 +28,7 @@ export interface TossUpdate {
 export class MatchService {
 
     createMatchSubject = new Subject<void>();
+    baseUrl = environment.apiUrl;
 
     constructor(private httpClient: HttpClient){
 
@@ -34,89 +36,89 @@ export class MatchService {
 
     createMatch(match: MatchCreate) {
         return this.httpClient.post<any>(
-            'http://localhost:3000/api/v1/matches',
+            `${this.baseUrl}/matches`,
             match
         );
     }
 
     getAll() {
         return this.httpClient.get<any>(
-            `http://localhost:3000/api/v1/matches`
+            `${this.baseUrl}/matches`
         );
     }
 
     get(matchId: string) {
         return this.httpClient.get<any>(
-            `http://localhost:3000/api/v1/matches/${matchId}`
+            `${this.baseUrl}/matches/${matchId}`
         );
     }
 
     updateTossResult(matchId: string, payload: TossUpdate) {
         return this.httpClient.post<any>(
-            `http://localhost:3000/api/v1/matches/${matchId}/toss`,
+            `${this.baseUrl}/matches/${matchId}/toss`,
             payload
         );
     }
 
     startFirstInning(matchId: string){
         return this.httpClient.get<any>(
-            `http://localhost:3000/api/v1/matches/${matchId}/firstInning/start`
+            `${this.baseUrl}/matches/${matchId}/firstInning/start`
         );
     }
 
     endFirstInning(matchId: string){
         return this.httpClient.get<any>(
-            `http://localhost:3000/api/v1/matches/${matchId}/firstInning/end`
+            `${this.baseUrl}/matches/${matchId}/firstInning/end`
         );
     }
 
     startSecondInning(matchId: string){
         return this.httpClient.get<any>(
-            `http://localhost:3000/api/v1/matches/${matchId}/secondInning/start`
+            `${this.baseUrl}/matches/${matchId}/secondInning/start`
         );
     }
 
     endSecondInning(matchId: string){
         return this.httpClient.get<any>(
-            `http://localhost:3000/api/v1/matches/${matchId}/secondInning/end`
+            `${this.baseUrl}/matches/${matchId}/secondInning/end`
         );
     }
 
     getLiveMatches() {
         return this.httpClient.get<any>(
-            `http://localhost:3000/api/v1/matches/live`
+            `${this.baseUrl}/matches/live`
         );
     }
 
     getInnings(matchId: string) {
         return this.httpClient.get<any>(
-            `http://localhost:3000/api/v1/matches/${matchId}/innings`
+            `${this.baseUrl}/matches/${matchId}/innings`
         );
     }
 
     submitDelivery(inningId:string, payload:any) {
         return this.httpClient.post<any>(
-            `http://localhost:3000/api/v1/innings/${inningId}/deliveries`,
+            `${this.baseUrl}/innings/${inningId}/deliveries`,
             payload
         );
     }
 
     endOver(inning: string) {
         return this.httpClient.get<any>(
-            `http://localhost:3000/api/v1/innings/${inning}/endover`
+            `${this.baseUrl}/innings/${inning}/endover`
         );
     }
 
     editDelivery(inningId:string, deliveryId: string, payload: any) {
         return this.httpClient.post<any>(
-            `http://localhost:3000/api/v1/innings/${inningId}/deliveries/${deliveryId}`,
+            `${this.baseUrl}/innings/${inningId}/deliveries/${deliveryId}`,
             payload
         );
     }
 
     removeDelivery(inningId:string, deliveryId: string, payload: any) {
         return this.httpClient.post<any>(
-            `http://localhost:3000/api/v1/innings/${inningId}/deliveries/${deliveryId}/remove`,
+            `${this.baseUrl}/innings/${inningId}/deliveries/${deliveryId}/remove`,
             payload
         );
     }

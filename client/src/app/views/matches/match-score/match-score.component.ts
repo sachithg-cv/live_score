@@ -4,6 +4,7 @@ import { Subject, map, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { io } from 'socket.io-client';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-match-score',
   templateUrl: './match-score.component.html',
@@ -66,7 +67,7 @@ export class MatchScoreComponent implements OnInit {
             console.log('already joined the room');
             return;
           }
-            this.room = io("http://localhost:3000/match",{
+            this.room = io(`${environment.messgingUrl}/match`,{
               query:{
                 roomId: this.roomId
               }

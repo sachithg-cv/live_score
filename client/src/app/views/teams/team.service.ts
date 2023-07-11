@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Player } from './player.service';
 import {HttpClient} from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 export interface TeamRequest {
     name:string;
@@ -27,6 +28,7 @@ export interface TeamPlayer {
     providedIn:'root'
 })
 export class TeamService {
+    baseUrl = environment.apiUrl;
     
     constructor(private httpClient: HttpClient) {
 
@@ -34,14 +36,14 @@ export class TeamService {
 
     submitTeam(team: TeamRequest) {
         return this.httpClient.post<any>(
-            'http://localhost:3000/api/v1/teams',
+            `${this.baseUrl}/teams`,
             team
         );
     }
 
     getAll() {
         return this.httpClient.get<TeamResponse[]>(
-            'http://localhost:3000/api/v1/teams'
+            `${this.baseUrl}/teams`
         );
     }
 }
