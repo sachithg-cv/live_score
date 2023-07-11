@@ -232,8 +232,27 @@ export class MatchScoreComponent implements OnInit {
     }
 
     removeDelivery(): void {
+      const req = {
+        roomId: this.roomId
+      };
 
-      this.closeEditDeliveryDialog();
+      this.matchService.removeDelivery(this.inning.id,this.editingDelivery._id,req)
+      .pipe(takeUntil(this.notifier))
+      .subscribe((data:any)=>{
+        console.log(data);
+        this.editingDelivery = null;
+        this.scoreSubmitForm.reset(
+          {
+            batsman:'',
+            bowler: this.currentBowler,
+            runs: 0,
+            extraType: 'None',
+            illegalDelivery: 'None',
+            wicket: false
+          }    
+        );
+        this.closeEditDeliveryDialog();
+      });
     }
 
     loadEditDelivery(): void {

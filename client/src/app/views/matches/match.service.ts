@@ -113,4 +113,12 @@ export class MatchService {
             payload
         );
     }
+
+    removeDelivery(inningId:string, deliveryId: string, payload: any) {
+        return this.httpClient.post<any>(
+            `http://localhost:3000/api/v1/innings/${inningId}/deliveries/${deliveryId}/remove`,
+            payload
+        );
+    }
+
 }
