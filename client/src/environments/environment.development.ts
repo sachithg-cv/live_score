@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    apiUrl: '/api/api/v1',
-    messgingUrl: '',
+    apiUrl: 'http://localhost:3000/api/v1',
+    messgingUrl: 'http://localhost:3000',
 };
