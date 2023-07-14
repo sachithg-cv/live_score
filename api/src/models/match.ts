@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { MatchSettingDoc } from "./global";
 
 interface Toss {
     name: string;
@@ -7,6 +8,7 @@ interface Toss {
 }
 interface MatchDoc {
     roomId: string;
+    settings: MatchSettingDoc
     teams: any[];
     toss?: Toss;
     firstInning?: any;
@@ -23,6 +25,17 @@ const matchSchema = new mongoose.Schema<MatchDoc>({
     roomId: {
         type: String,
         required: true
+    },
+    settings: {
+        wide: {
+            type: Number,
+        },
+        noBall: {
+            type: Number,
+        },
+        isIllegalDeliveryDiscarded: {
+            type: Boolean,
+        }
     },
     teams: [
         { 

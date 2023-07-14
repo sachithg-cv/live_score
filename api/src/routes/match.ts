@@ -10,7 +10,7 @@ import matchNamespace from '../messaging/namespace/match-name-space';
 const router = express.Router();
 
 router.post('/', currentuser, requireAuth, async (req: Request, res: Response) => {
-    const { teams }  = req.body;
+    const { teams, settings }  = req.body;
 
     const team1 = await Team.findById(teams[0]).exec();
     const team2 = await Team.findById(teams[1]).exec();
@@ -18,6 +18,7 @@ router.post('/', currentuser, requireAuth, async (req: Request, res: Response) =
     const match = new Match({
         roomId: new mongoose.Types.ObjectId().toHexString(),
         status:'scheduled',
+        settings: settings
     });
 
     match.teams.push(team1);
@@ -154,7 +155,8 @@ router.get('/:matchId/innings', currentuser, requireAuth, async (req: Request, r
         firstInning: firstInningDetails,
         secondInning: secondInningDetails,
         roomId: match?.roomId,
-        status: match?.status
+        status: match?.status,
+        settings: match?.settings
     });
 });
 

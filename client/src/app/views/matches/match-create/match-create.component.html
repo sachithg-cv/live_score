@@ -20,6 +20,30 @@
                 </p>
                </div>
             </div>
+            <div class="mb-3">
+                <label cLabel for="wide">Runs for wide delivery</label>
+                <input cFormControl id="wide" type="text" formControlName="wide"/>
+                <div *ngIf="matchCreateForm.get('wide')?.touched && matchCreateForm.get('wide')?.errors">
+                    <p *ngIf="matchCreateForm.get('wide')?.errors?.['required']">
+                        Value is required
+                    </p>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label cLabel for="noBall">Runs for No delivery</label>
+                <input cFormControl id="noBall" type="text" formControlName="noBall"/>
+                <div *ngIf="matchCreateForm.get('noBall')?.touched && matchCreateForm.get('noBall')?.errors">
+                    <p *ngIf="matchCreateForm.get('noBall')?.errors?.['required']">
+                        Value is required
+                    </p>
+                </div>
+            </div>
+            <div class="mb-3">
+                <c-form-check [switch]="true">
+                    <input cFormCheckInput type="checkbox" formControlName="isIllegalDeliveryDiscarded"/>
+                    <label cFormCheckLabel>Is wides and no deliveries are considered as legal</label>
+                  </c-form-check>
+            </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-start">
               <button type="button" (click)="cancel()" cButton color="danger">Cancel</button>
               <button type="submit" cButton color="success">Create</button>
