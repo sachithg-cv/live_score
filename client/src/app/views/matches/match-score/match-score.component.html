@@ -31,8 +31,8 @@
                 <div class="mb-3">
                     <span>Illegal delivery</span>
                     <c-form-check *ngFor="let illegalDelivery of illegalDeliveries; let i = index">
-                        <input cFormCheckInput type="radio" [value]="illegalDelivery" name="illegalDelivery" formControlName="illegalDelivery"/>
-                        <label cFormCheckLabel>{{illegalDelivery}}</label>
+                        <input cFormCheckInput type="radio" [value]="illegalDelivery.value" name="illegalDelivery" formControlName="illegalDelivery"/>
+                        <label cFormCheckLabel>{{illegalDelivery.name}}</label>
                       </c-form-check>
                 </div>
                 <div class="mb-3">

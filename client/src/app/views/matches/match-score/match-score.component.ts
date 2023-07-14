@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatchService} from '../match.service';
-import { Subject, map, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { io } from 'socket.io-client';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -20,11 +20,11 @@ export class MatchScoreComponent implements OnInit {
     inningType!:string;
     matchTitle!:string;
     runs: number[] = [0,1,2,3,4,5,6,7,8,9,10];
-    illegalDeliveries: string[] = ["None","Wide", "No ball"];
+    illegalDeliveries: any[] = [{name: "None", value:"None"},{name: "Wide", value:"wide"}, {name:"No ball", value:"noBall"}];
     extrasType: string[] = ["None","Byes", "Leg Byes"];
     currentOverList: any;
     previousOverList:any;
-    settings:any = { "Wide":5, "No ball": 4};
+    settings:any;
     room:any;
     editDeliveryModalVisible: boolean = false;
     editingDelivery:any = null;
@@ -104,6 +104,7 @@ export class MatchScoreComponent implements OnInit {
       this.matchService.getInnings(this.match)
         .pipe(takeUntil(this.notifier))
         .subscribe((data:any)=>{
+            console.log(data);
             this.status = data?.status
             if (this.status === "first_inning_started") {
                 this.inning = data.firstInning;
@@ -114,6 +115,7 @@ export class MatchScoreComponent implements OnInit {
             }
             this.matchTitle = `${this.inning?.batting.name} vs ${this.inning?.bowling.name}`;
             this.roomId = data?.roomId;
+            this.settings = data?.settings;
             this.mapOvers(this.inning.currentOver, this.inning.lastOvers);
             this.joinRoom();
         });
@@ -150,7 +152,6 @@ export class MatchScoreComponent implements OnInit {
     }
 
     submitDelivery(): void {
-
       const {batsman,bowler,runs,illegalDelivery,extraType,wicket} = this.scoreSubmitForm.value;
 
       const currentOver = this.inning.currentOver + 1;
@@ -171,8 +172,8 @@ export class MatchScoreComponent implements OnInit {
         extraType:"None",
       }
 
-      if (illegalDelivery && (illegalDelivery === "Wide" || illegalDelivery ==="No ball")){
-        delivery.isLegal = false;
+      if (illegalDelivery && (illegalDelivery === "wide" || illegalDelivery ==="noBall")){
+        delivery.isLegal = this.settings["isIllegalDeliveryDiscarded"];
         delivery.extraRuns += this.settings[illegalDelivery]
         delivery.illegalType = illegalDelivery;
       }
@@ -290,8 +291,8 @@ export class MatchScoreComponent implements OnInit {
         extraType:"None",
       }
 
-      if (illegalDelivery && (illegalDelivery === "Wide" || illegalDelivery ==="No ball")){
-        delivery.isLegal = false;
+      if (illegalDelivery && (illegalDelivery === "wide" || illegalDelivery ==="noBall")){
+        delivery.isLegal = this.settings["isIllegalDeliveryDiscarded"];
         delivery.extraRuns += this.settings[illegalDelivery]
         delivery.illegalType = illegalDelivery;
       }
