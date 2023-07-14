@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 
 export interface MatchCreate {
     teams:string[];
+    settings: any
 }
 
 export interface MatchResponse {

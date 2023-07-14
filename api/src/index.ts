@@ -8,6 +8,7 @@ import testNameSpace from './messaging/namespace/test-name-space';
 import cookieSession from 'cookie-session';
 import cors from 'cors';
 import matchNamespace from './messaging/namespace/match-name-space';
+import { runScripts } from './services/util';
 
 const root = express();
 root.use(cors({
@@ -38,17 +39,32 @@ const start = async () => {
     try {
         // TODO: move this to env 
         // for local dev use this - mongodb://localhost:27018/live-score
-        await mongoose.connect("mongodb://mongodb_container:27017/live-score", {
+        await mongoose.connect("mongodb://localhost:27018/live-score", {
             auth: {
                 username: 'root',
                 password: 'root'
             },
             authSource:"admin"
         });
+        await runScripts();
     } catch (err) {
         console.error(err);
     }
+
     httpServer.listen(3000);
 }
 
+mongoose.connection.on('connected', err => {
+    console.log("Mongo db is connected");
+});
+
+mongoose.connection.on('disconnected', err => {
+    console.log("Mongo db is disconnected");
+});
+
+mongoose.connection.on('error', err => {
+    console.error(err);
+});
+
 start();
+
