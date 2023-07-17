@@ -1,1 +1,9 @@
-<p>Live</p>
+<c-card class="mb-3">
+    <c-card-header>{{teamNames[0]}}&nbsp;vs&nbsp;{{teamNames[1]}}</c-card-header>
+    <c-card-body class="p-4">
+        <p>{{tossSummaryLine}}</p>
+        <ng-container *ngIf="isDataLoaded">
+            <app-live-inning [inningId]="liveInningId" [roomId]="roomId" [inningType]="liveInningType"></app-live-inning>
+        </ng-container>
+    </c-card-body>
+</c-card>

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, map, takeUntil } from 'rxjs';
 
 @Component({
+    selector: "app-scheduled-match",
   templateUrl: 'scheduled-match.component.html',
   styleUrls: ['scheduled-match.component.scss']
 })

@@ -5,6 +5,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule} from '@angular/common/http';
 import { PublicRoutingModule} from './public-routing,module';
+import { LiveMatchComponent } from './live-match/live-match.component';
+import { ScheduledMatchComponent } from './scheduled-match/scheduled-match.component';
+import { CompletedMatchComponent } from './completed-match/completed-match.component';
+import { LiveInningComponent } from './live-inning/live-inning.component';
 
 @NgModule({
   imports: [
@@ -21,7 +25,10 @@ import { PublicRoutingModule} from './public-routing,module';
     TableModule
   ],
   declarations: [
-    
+    LiveMatchComponent,
+    ScheduledMatchComponent,
+    CompletedMatchComponent,
+    LiveInningComponent
   ],
 })
 export class PublicModule {
