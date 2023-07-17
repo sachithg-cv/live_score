@@ -7,6 +7,7 @@ import { teamsRouter } from "./teams";
 import { matchRouter } from "./match";
 import { inningRouter } from "./inning";
 import { utilRouter } from "./util";
+import { publicRouter } from './public';
 
 const app = express();
 app.use(json());
@@ -17,5 +18,6 @@ app.use('/teams', teamsRouter);
 app.use('/matches', matchRouter);
 app.use('/innings', inningRouter);
 app.use('/util', utilRouter )
+app.use('/public', publicRouter )
 
 export {app as appRoutes};

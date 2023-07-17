@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { navItems } from './_nav';
+import { navSecuredItems } from './_nav.secured';
 import { AuthService } from 'src/app/views/auth/auth.service';
 
 @Component({
@@ -11,27 +12,29 @@ import { AuthService } from 'src/app/views/auth/auth.service';
 export class DefaultLayoutComponent implements OnInit{
 
   public navItems = navItems;
+  public navSecuredItems = navSecuredItems
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.authService.signedin$.subscribe((isSignedIn)=>{
       if (isSignedIn) {
-        this.navItems.splice(1, 0, {
-          title: true, name: 'Teams'
-        },{
-          name: 'Create', url: '/teams/create', iconComponent: {name:'cil-puzzle'}
-        },{
-          title: true, name: 'Matches'
-        },{
-          name: 'Create', url: '/matches/create', iconComponent: {name:'cil-puzzle'}
-        },{
-          name: 'List', url: '/matches/list', iconComponent: {name:'cil-puzzle'}
-        },
-        {
-          name: 'Live', url: '/matches/live-list-admin', iconComponent: {name:'cil-puzzle'}
-        }
-        );
+        // this.navItems.splice(1, 0, {
+        //   title: true, name: 'Teams'
+        // },{
+        //   name: 'Create', url: '/teams/create', iconComponent: {name:'cil-puzzle'}
+        // },{
+        //   title: true, name: 'Matches'
+        // },{
+        //   name: 'Create', url: '/matches/create', iconComponent: {name:'cil-puzzle'}
+        // },{
+        //   name: 'List', url: '/matches/list', iconComponent: {name:'cil-puzzle'}
+        // },
+        // {
+        //   name: 'Live', url: '/matches/live-list-admin', iconComponent: {name:'cil-puzzle'}
+        // }
+        // );
+        this.navItems = this.navSecuredItems;
       }
     });
     

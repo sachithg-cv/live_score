@@ -27,9 +27,13 @@ const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        canLoad: [AuthGuard],
         loadChildren: () =>
           import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
+      },
+      {
+        path: 'public',
+        loadChildren: () =>
+          import('./views/public/public.module').then((m) => m.PublicModule)
       },
       {
         path: 'teams',
