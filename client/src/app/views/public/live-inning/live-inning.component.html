@@ -1,0 +1,52 @@
+<c-container *ngIf="liveScore">
+    <c-row>
+        {{inningType}}
+    </c-row>
+    <c-row>
+        {{batting?.name}}
+    </c-row>
+    <c-row>
+        <c-col>Score</c-col>
+        <c-col>{{liveScore.runs +
+            liveScore.extras}}&nbsp;/{{liveScore.wickets}}&nbsp;&nbsp;Balls&nbsp;{{liveScore.balls}}</c-col>
+        <c-col>Extras&nbsp;{{liveScore.extras}}</c-col>
+    </c-row>
+</c-container>
+
+<c-container *ngIf="batsmen && batsmen.length > 0">
+    <c-row *ngFor="let batsman of batsmen">
+        <c-col>{{batsman?._id[1]}}</c-col>
+        <c-col>Runs&nbsp;{{batsman?.runs}}</c-col>
+        <c-col>Balls&nbsp;{{batsman?.balls}}</c-col>
+        <c-col>Out&nbsp;{{batsman?.isOut}}</c-col>
+    </c-row>
+</c-container>
+
+<c-container *ngIf="bowlers && bowlers.length > 0">
+    <c-row>{{bowling?.name}}</c-row>
+    <c-row *ngFor="let bowler of bowlers">
+        <c-col>{{bowler?._id[1]}}</c-col>
+        <c-col>Runs&nbsp;{{bowler?.runs}}</c-col>
+        <c-col>Balls&nbsp;{{bowler?.balls}}</c-col>
+        <c-col>wickets&nbsp;{{bowler?.wickets}}</c-col>
+        <c-col>extras&nbsp;{{bowler?.extras}}</c-col>
+    </c-row>
+</c-container>
+
+<c-container *ngIf="currentOver && currentOver.length > 0">
+    <c-row>Current Over {{currentOverNumber}}</c-row>
+    <c-row *ngFor="let delivery of currentOver">
+        <c-col>Runs&nbsp;{{delivery?.runs}}</c-col>
+        <c-col>isWicket&nbsp;{{delivery?.isWicket}}</c-col>
+        <c-col>isLegal&nbsp;{{delivery?.isLegal}}</c-col>
+    </c-row>
+</c-container>
+
+<c-container *ngIf="previousOver && previousOver.length > 0">
+    <c-row>Last Over {{previousOverNumber}}</c-row>
+    <c-row *ngFor="let delivery of previousOver">
+        <c-col>Runs&nbsp;{{delivery?.runs}}</c-col>
+        <c-col>isWicket&nbsp;{{delivery?.isWicket}}</c-col>
+        <c-col>isLegal&nbsp;{{delivery?.isLegal}}</c-col>
+    </c-row>
+</c-container>
