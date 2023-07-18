@@ -4,6 +4,7 @@ export interface MatchSettingDoc {
     wide: number;
     noBall: number;
     isIllegalDeliveryDiscarded: boolean;
+    ballsPerOver: number;
 }
 interface GlobalDoc {
     roomId: string;
@@ -28,6 +29,11 @@ const matchSettingSchema = new mongoose.Schema<MatchSettingDoc>({
         type: Boolean,
         required: true,
         default: true
+    },
+    ballsPerOver: {
+        type: Number,
+        required: true,
+        default: 6
     }
 });
 

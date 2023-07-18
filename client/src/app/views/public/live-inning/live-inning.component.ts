@@ -16,6 +16,8 @@ export class LiveInningComponent implements OnInit {
     @Input() inningId!: string;
     @Input() roomId!: string;
     @Input() inningType!: string;
+    @Input() matchSettings!: any;
+
     liveScore!: any;
     batting: any;
     bowling: any;
@@ -26,6 +28,8 @@ export class LiveInningComponent implements OnInit {
     currentOverNumber: any;
     previousOverNumber: any;
     room: any;
+    over!: string;
+
 
     constructor(private publicService: PublicService) {
     }
@@ -42,9 +46,9 @@ export class LiveInningComponent implements OnInit {
                 this.batting = batting;
                 this.bowling = bowling;
 
-                this.liveScore = liveScore[0];
                 this.batsmen = batsmen;
                 this.bowlers = bowlers;
+                this.mapLiveScore(liveScore[0]);
                 this.mapOvers(currentOver, lastOvers);
                 this.joinRoom();
             });
@@ -62,6 +66,15 @@ export class LiveInningComponent implements OnInit {
             this.previousOver = lastOvers.filter((val) => val.over === this.previousOverNumber);
             this.currentOver = lastOvers.filter((val) => val.over === this.currentOverNumber);
         }
+
+
+    }
+
+    mapLiveScore(liveScore: any): void {
+        this.liveScore = liveScore;
+        const numberOfBalls = liveScore?.balls
+        const ballsPerOver = this.matchSettings.ballsPerOver;
+        this.over = Math.floor(numberOfBalls / ballsPerOver) + '.'+ numberOfBalls % ballsPerOver;
     }
 
     joinRoom(): void {
@@ -94,7 +107,7 @@ export class LiveInningComponent implements OnInit {
 
                 if (session && session["type"] && session["type"] === "live_score") {
                     const { liveScore, batsmen, bowlers, currentOver, lastOvers } = session;
-                    this.liveScore = liveScore[0];
+                    this.mapLiveScore(liveScore[0]);
                     this.batsmen = batsmen;
                     this.bowlers = bowlers;
                     this.mapOvers(currentOver, lastOvers);

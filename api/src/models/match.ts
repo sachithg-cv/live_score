@@ -35,6 +35,9 @@ const matchSchema = new mongoose.Schema<MatchDoc>({
         },
         isIllegalDeliveryDiscarded: {
             type: Boolean,
+        },
+        ballsPerOver: {
+            type: Number,
         }
     },
     teams: [

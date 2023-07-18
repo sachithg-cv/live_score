@@ -3,26 +3,28 @@
     <c-card-body class="p-4">
         <form cForm [formGroup]="matchCreateForm" (ngSubmit)="createMatch()">
             <div class="mb-3">
-              <label cLabel for="team1">Team 1</label>
-              <p-dropdown name="team1" [style]="{'width':'100%'}" formControlName="team1" [options]="teams" optionLabel="name" optionValue="id"></p-dropdown>
-              <div *ngIf="matchCreateForm.get('team1')?.touched && matchCreateForm.get('team1')?.errors">
-                <p *ngIf="matchCreateForm.get('team1')?.errors?.['required']">
-                    Value is required
-                </p>
-               </div>
+                <label cLabel for="team1">Team 1</label>
+                <p-dropdown name="team1" [style]="{'width':'100%'}" formControlName="team1" [options]="teams"
+                    optionLabel="name" optionValue="id"></p-dropdown>
+                <div *ngIf="matchCreateForm.get('team1')?.touched && matchCreateForm.get('team1')?.errors">
+                    <p *ngIf="matchCreateForm.get('team1')?.errors?.['required']">
+                        Value is required
+                    </p>
+                </div>
             </div>
             <div class="mb-3">
-              <label cLabel for="team2">Team 2</label>
-              <p-dropdown name="team2" [style]="{'width':'100%'}" formControlName="team2" [options]="teams" optionLabel="name" optionValue="id"></p-dropdown>
-              <div *ngIf="matchCreateForm.get('team2')?.touched && matchCreateForm.get('team2')?.errors">
-                <p *ngIf="matchCreateForm.get('team2')?.errors?.['required']">
-                    Value is required
-                </p>
-               </div>
+                <label cLabel for="team2">Team 2</label>
+                <p-dropdown name="team2" [style]="{'width':'100%'}" formControlName="team2" [options]="teams"
+                    optionLabel="name" optionValue="id"></p-dropdown>
+                <div *ngIf="matchCreateForm.get('team2')?.touched && matchCreateForm.get('team2')?.errors">
+                    <p *ngIf="matchCreateForm.get('team2')?.errors?.['required']">
+                        Value is required
+                    </p>
+                </div>
             </div>
             <div class="mb-3">
                 <label cLabel for="wide">Runs for wide delivery</label>
-                <input cFormControl id="wide" type="text" formControlName="wide"/>
+                <input cFormControl id="wide" type="text" formControlName="wide" />
                 <div *ngIf="matchCreateForm.get('wide')?.touched && matchCreateForm.get('wide')?.errors">
                     <p *ngIf="matchCreateForm.get('wide')?.errors?.['required']">
                         Value is required
@@ -31,7 +33,7 @@
             </div>
             <div class="mb-3">
                 <label cLabel for="noBall">Runs for No delivery</label>
-                <input cFormControl id="noBall" type="text" formControlName="noBall"/>
+                <input cFormControl id="noBall" type="text" formControlName="noBall" />
                 <div *ngIf="matchCreateForm.get('noBall')?.touched && matchCreateForm.get('noBall')?.errors">
                     <p *ngIf="matchCreateForm.get('noBall')?.errors?.['required']">
                         Value is required
@@ -39,16 +41,27 @@
                 </div>
             </div>
             <div class="mb-3">
+                <label cLabel for="ballsPerOver">Balls per over</label>
+                <input cFormControl id="ballsPerOver" type="text" formControlName="ballsPerOver" />
+                <div
+                    *ngIf="matchCreateForm.get('ballsPerOver')?.touched && matchCreateForm.get('ballsPerOver')?.errors">
+                    <p *ngIf="matchCreateForm.get('ballsPerOver')?.errors?.['required']">
+                        Value is required
+                    </p>
+                </div>
+            </div>
+            <div class="mb-3">
                 <c-form-check [switch]="true">
-                    <input cFormCheckInput type="checkbox" formControlName="isIllegalDeliveryDiscarded"/>
+                    <input cFormCheckInput type="checkbox" formControlName="isIllegalDeliveryDiscarded" />
                     <label cFormCheckLabel>Is wides and no deliveries are considered as legal</label>
-                  </c-form-check>
+                </c-form-check>
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <button type="button" (click)="cancel()" cButton color="danger">Cancel</button>
-              <button type="submit" cButton color="success">Create</button>
+                <button type="button" (click)="cancel()" cButton color="danger">Cancel</button>
+                <button type="submit" cButton color="success">Create</button>
             </div>
-            <div *ngIf="matchCreateForm.get('team1')?.touched && matchCreateForm.get('team2')?.touched && matchCreateForm.errors">
+            <div
+                *ngIf="matchCreateForm.get('team1')?.touched && matchCreateForm.get('team2')?.touched && matchCreateForm.errors">
                 <p *ngIf="matchCreateForm.errors['sameTeamSelected']">
                     Select two different teams
                 </p>
@@ -59,6 +72,6 @@
                     Failed to Signup
                 </p>
             </div>
-          </form>
+        </form>
     </c-card-body>
 </c-card>
