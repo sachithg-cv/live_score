@@ -18,6 +18,7 @@ export class LiveMatchComponent implements OnInit {
     roomId!: string;
     teamNames: any = [];
     isDataLoaded: boolean =false;
+    matchSettings: any;
 
     constructor(private route: ActivatedRoute, private publicService: PublicService) {
     }
@@ -32,7 +33,7 @@ export class LiveMatchComponent implements OnInit {
             )
             .subscribe((data) => {
                 console.log(data);
-                const { status, toss, firstInning, secondInning, roomId, teams } = data;
+                const { status, toss, firstInning, secondInning, roomId, teams, settings } = data;
                 const { name, isBatFirst } = toss;
                 this.tossSummaryLine = `${name} has won the toss and elected to ${isBatFirst ? 'bat first' : 'bowl first'}.`;
 
@@ -47,6 +48,7 @@ export class LiveMatchComponent implements OnInit {
                 }
                 this.roomId = roomId;
                 this.teamNames = teams.map((val: any) => val.name);
+                this.matchSettings = settings;
                 this.isDataLoaded = true;
             });
     }
