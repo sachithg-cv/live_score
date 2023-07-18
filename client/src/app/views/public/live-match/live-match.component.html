@@ -3,7 +3,12 @@
     <c-card-body class="p-4">
         <p>{{tossSummaryLine}}</p>
         <ng-container *ngIf="isDataLoaded">
-            <app-live-inning [inningId]="liveInningId" [roomId]="roomId" [inningType]="liveInningType" [matchSettings]="matchSettings"></app-live-inning>
+            <app-live-inning [inningId]="liveInningId" [roomId]="roomId" [inningType]="liveInningType"
+                [matchSettings]="matchSettings"></app-live-inning>
+            <ng-container *ngIf="otherInningId">
+                <app-other-inning [inningId]="otherInningId" [inningType]="otherInningType"
+                    [matchSettings]="matchSettings"></app-other-inning>
+            </ng-container>
         </ng-container>
     </c-card-body>
 </c-card>
