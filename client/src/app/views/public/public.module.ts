@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ButtonModule, CardModule, FormModule, GridModule, TableModule } from '@coreui/angular';
+import { ButtonModule, CardModule, FormModule, GridModule, TableModule, ListGroupModule, AlertModule, BadgeModule   } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -23,7 +23,10 @@ import { OtherInningComponent } from './other-inning/other-inning.component';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    TableModule
+    TableModule,
+    ListGroupModule,
+    AlertModule,
+    BadgeModule
   ],
   declarations: [
     LiveMatchComponent,

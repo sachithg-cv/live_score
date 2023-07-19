@@ -1,52 +1,113 @@
-<c-container *ngIf="liveScore">
+<div *ngIf="liveScore">
     <c-row>
-        {{inningType}}
+        <c-alert class="mx-1 py-0">
+            <div class="d-flex w-100 justify-content-center">
+                <h5 class="mr-auto">{{inningType}}</h5>
+            </div>
+        </c-alert>
     </c-row>
     <c-row>
-        {{batting?.name}}
+        <div class="d-flex w-100 justify-content-between">
+            <div>
+                <h6><strong>{{batting?.name}}</strong></h6>
+            </div>
+            <div class="text-dark">
+                <span>({{over}}&nbsp;ov)</span>
+                <span>&nbsp;&nbsp;{{liveScore.runs +
+                    liveScore.extras}}&nbsp;/{{liveScore.wickets}}</span>
+            </div>
+        </div>
+        <div class="d-flex w-100 justify-content-end">
+            <span>
+                <small class="text-dark">
+                    (Extras {{liveScore.extras}})
+                </small>
+            </span>
+        </div>
     </c-row>
-    <c-row>
-        <c-col>Score</c-col>
-        <c-col>{{liveScore.runs +
-            liveScore.extras}}&nbsp;/{{liveScore.wickets}}&nbsp;&nbsp;Over&nbsp;{{over}}</c-col>
-        <c-col>Extras&nbsp;{{liveScore.extras}}</c-col>
-    </c-row>
-</c-container>
+</div>
 
-<c-container *ngIf="batsmen && batsmen.length > 0">
-    <c-row *ngFor="let batsman of batsmen">
-        <c-col>{{batsman?._id[1]}}</c-col>
-        <c-col>Runs&nbsp;{{batsman?.runs}}</c-col>
-        <c-col>Balls&nbsp;{{batsman?.balls}}</c-col>
-        <c-col>Out&nbsp;{{batsman?.isOut}}</c-col>
-    </c-row>
-</c-container>
+<c-row class="mt-3">
+    <div>
+        <h6>{{batting?.name}}<span class="px-1">batting</span></h6>
+    </div>
+    <div *ngIf="batsmen && batsmen.length > 0">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Batsman</th>
+                        <th scope="col">R</th>
+                        <th scope="col">B</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let batsman of batsmen">
+                        <td [ngClass]=" batsman?.isOut ? 'text-danger' : 'text-dark'">{{batsman?._id[1]}}<span
+                                *ngIf="batsman?.isOut"><small class="text-danger px-1">out</small></span></td>
+                        <td [ngClass]=" batsman?.isOut ? 'text-danger' : 'text-dark'">{{batsman?.runs}}</td>
+                        <td [ngClass]=" batsman?.isOut ? 'text-danger' : 'text-dark'">{{batsman?.balls}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</c-row>
 
-<c-container *ngIf="bowlers && bowlers.length > 0">
-    <c-row>{{bowling?.name}}</c-row>
-    <c-row *ngFor="let bowler of bowlers">
-        <c-col>{{bowler?._id[1]}}</c-col>
-        <c-col>Runs&nbsp;{{bowler?.runs}}</c-col>
-        <c-col>Balls&nbsp;{{bowler?.balls}}</c-col>
-        <c-col>wickets&nbsp;{{bowler?.wickets}}</c-col>
-        <c-col>extras&nbsp;{{bowler?.extras}}</c-col>
-    </c-row>
-</c-container>
+<c-row class="mt-3">
+    <div>
+        <h6>{{bowling?.name}}<span class="px-1">bowling</span></h6>
+    </div>
+    <div *ngIf="bowlers && bowlers.length > 0">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Bowler</th>
+                        <th scope="col">R</th>
+                        <th scope="col">B</th>
+                        <th scope="col">W</th>
+                        <th scope="col">E</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let bowler of bowlers">
+                        <td class="text-dark">{{bowler?._id[1]}}</td>
+                        <td class="text-dark">{{bowler?.runs}}</td>
+                        <td class="text-dark">{{bowler?.balls}}</td>
+                        <td class="text-dark">{{bowler?.wickets}}</td>
+                        <td class="text-dark">{{bowler?.extras}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</c-row>
 
-<c-container *ngIf="currentOver && currentOver.length > 0">
-    <c-row>Current Over {{currentOverNumber}}</c-row>
-    <c-row *ngFor="let delivery of currentOver">
-        <c-col>Runs&nbsp;{{delivery?.runs}}</c-col>
-        <c-col>isWicket&nbsp;{{delivery?.isWicket}}</c-col>
-        <c-col>isLegal&nbsp;{{delivery?.isLegal}}</c-col>
-    </c-row>
-</c-container>
+<c-row>
+    <div *ngIf="currentOver && currentOver.length > 0">
+        <div>
+            <h6>Over ({{currentOverNumber}})</h6>
+        </div>
+        <div class="d-flex w-100 justify-content-start">
+            <div class="px-1" *ngFor="let delivery of currentOver">
+                <c-badge [color]="delivery.isWicket? 'warning': delivery.isLegal ? 'success':'danger'"
+                    shape="rounded-pill">{{delivery?.isWicket? 'W': delivery.runs + delivery.extraRuns}}</c-badge>
+            </div>
+        </div>
+    </div>
+</c-row>
 
-<c-container *ngIf="previousOver && previousOver.length > 0">
-    <c-row>Last Over {{previousOverNumber}}</c-row>
-    <c-row *ngFor="let delivery of previousOver">
-        <c-col>Runs&nbsp;{{delivery?.runs}}</c-col>
-        <c-col>isWicket&nbsp;{{delivery?.isWicket}}</c-col>
-        <c-col>isLegal&nbsp;{{delivery?.isLegal}}</c-col>
-    </c-row>
-</c-container>
+<c-row class="mt-2">
+    <div *ngIf="previousOver && previousOver.length > 0">
+        <div>
+            <h6>Last Over ({{previousOverNumber}})</h6>
+        </div>
+        <div class="d-flex w-100 justify-content-start">
+            <div class="px-1" *ngFor="let delivery of previousOver">
+                <c-badge [color]="delivery.isWicket? 'warning': delivery.isLegal ? 'success':'danger'"
+                    shape="rounded-pill">{{delivery?.isWicket? 'W': delivery.runs + delivery.extraRuns}}</c-badge>
+            </div>
+        </div>
+    </div>
+</c-row>

@@ -1,56 +1,58 @@
 <c-row>
   <c-col md="12" xl="6">
-    <c-widget-stat-b
-      #widgetStatB1inv="cWidgetStatB"
-      [title]="'Live Matches'"
-      class="mb-4"
-      color="success"
-      inverse
-      [value]="''+liveMatches.length"
-    >
-      <div *ngFor="let liveMatch of liveMatches; let i = index">
-        <a [routerLink]="['/public/live',liveMatch._id]" style="color: white; text-decoration: none;">
-          <span>{{liveMatch.teams[0].name}} vs {{liveMatch.teams[1].name}}</span>
-          <span>&nbsp;view</span>
-        </a>
+    <c-widget-stat-b #widgetStatB1inv="cWidgetStatB" [title]="'Live Matches'" class="mb-4" color="success" inverse
+      [value]="''+liveMatches.length">
+      <div class="mt-3">
+        <div cListGroup *ngFor="let liveMatch of liveMatches; let i = index">
+          <a [routerLink]="['/public/live',liveMatch._id]" style="color: white; text-decoration: none;" cListGroupItem>
+            <div class="d-flex w-100 justify-content-between">
+              <small class="mb-1">
+                <i class="fa-solid fa-broom-ball fa-beat"></i>&nbsp;{{liveMatch.teams[0].name}} vs
+                {{liveMatch.teams[1].name}}
+              </small>
+              <small><span><i class="fa-solid fa-arrow-right"></i></span></small>
+            </div>
+          </a>
+        </div>
       </div>
-      
     </c-widget-stat-b>
   </c-col>
   <c-col md="12" xl="6">
-    <c-widget-stat-b
-      #widgetStatB1inv="cWidgetStatB"
-      [title]="'Scheduled Matches'"
-      class="mb-4"
-      color="primary"
-      inverse
-      [value]="''+scheduledMatches.length"
-    >
-    <div *ngFor="let scheduledMatch of scheduledMatches; let i = index">
-      <a [routerLink]="['/public/scheduled',scheduledMatch._id]" style="color: white; text-decoration: none;">
-        <span>{{scheduledMatch.teams[0].name}} vs {{scheduledMatch.teams[1].name}}</span>
-        <span>&nbsp;view</span>
-      </a>
-    </div>
+    <c-widget-stat-b #widgetStatB1inv="cWidgetStatB" [title]="'Scheduled Matches'" class="mb-4" color="primary" inverse
+      [value]="''+scheduledMatches.length">
+      <div class="mt-3">
+        <div cListGroup *ngFor="let scheduledMatch of scheduledMatches; let i = index">
+          <a [routerLink]="['/public/scheduled',scheduledMatch._id]" style="color: white; text-decoration: none;"
+            cListGroupItem>
+            <div class="d-flex w-100 justify-content-between">
+              <small class="mb-1">{{scheduledMatch.teams[0].name}} vs
+                {{scheduledMatch.teams[1].name}}</small>
+              <small><span><i class="fa-solid fa-arrow-right"></i></span></small>
+            </div>
+          </a>
+        </div>
+      </div>
     </c-widget-stat-b>
   </c-col>
 </c-row>
 <c-row>
   <c-col md="12" xl="6">
-    <c-widget-stat-b
-      #widgetStatB1inv="cWidgetStatB"
-      [title]="'Completed Matches'"
-      class="mb-4"
-      color="warning"
-      inverse
-      [value]="''+completedMatches.length"
-    >
-    <div *ngFor="let completedMatch of completedMatches; let i = index">
-      <a [routerLink]="['/public/completed',completedMatch._id]" style="color: white; text-decoration: none;">
-        <span>{{completedMatch.teams[0].name}} vs {{completedMatch.teams[1].name}}</span>
-        <span>&nbsp;view</span>
-      </a>
-    </div>
+    <c-widget-stat-b #widgetStatB1inv="cWidgetStatB" [title]="'Completed Matches'" class="mb-4" color="warning" inverse
+      [value]="''+completedMatches.length">
+      <div class="mt-3">
+        <div cListGroup *ngFor="let completedMatch of completedMatches; let i = index">
+          <a [routerLink]="['/public/completed',completedMatch._id]" style="color: white; text-decoration: none;"
+            cListGroupItem>
+            <div class="d-flex w-100 justify-content-between">
+              <small class="mb-1">
+                {{completedMatch.teams[0].name}} vs
+                {{completedMatch.teams[1].name}}
+              </small>
+              <small><span><i class="fa-solid fa-arrow-right"></i></span></small>
+            </div>
+          </a>
+        </div>
+      </div>
     </c-widget-stat-b>
   </c-col>
 </c-row>

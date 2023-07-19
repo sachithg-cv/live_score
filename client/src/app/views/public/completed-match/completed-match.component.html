@@ -1,12 +1,19 @@
 <c-card class="mb-3">
-    <c-card-header>{{teamNames[0]}}&nbsp;vs&nbsp;{{teamNames[1]}}</c-card-header>
+    <c-card-header>
+        <div class="d-flex w-100 justify-content-center">
+            <h5><strong>{{teamNames[0]}}&nbsp;vs&nbsp;{{teamNames[1]}}</strong></h5>
+        </div>
+    </c-card-header>
     <c-card-body class="p-4">
-        <p>{{tossSummaryLine}}</p>
+        <!-- remove toss result and add match results here-->
+        <c-alert color="info" class="py-0"><small>{{tossSummaryLine}}</small></c-alert>
         <ng-container *ngIf="isDataLoaded">
             <app-other-inning [inningId]="firstInningId" [inningType]="firstInningType"
                 [matchSettings]="matchSettings"></app-other-inning>
-            <app-other-inning [inningId]="secondInningId" [inningType]="secondInningType"
+            <div class="mt-3">
+                <app-other-inning [inningId]="secondInningId" [inningType]="secondInningType"
                 [matchSettings]="matchSettings"></app-other-inning>
+            </div>
         </ng-container>
     </c-card-body>
 </c-card>
