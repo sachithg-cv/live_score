@@ -1,13 +1,19 @@
 <c-card class="mb-3">
-    <c-card-header>{{teamNames[0]}}&nbsp;vs&nbsp;{{teamNames[1]}}</c-card-header>
+    <c-card-header>
+        <div class="d-flex w-100 justify-content-center">
+            <h5><strong>{{teamNames[0]}}&nbsp;vs&nbsp;{{teamNames[1]}}</strong></h5>
+        </div>
+        </c-card-header>
     <c-card-body class="p-4">
-        <p>{{tossSummaryLine}}</p>
+        <c-alert color="info" class="py-0"><small>{{tossSummaryLine}}</small></c-alert>
         <ng-container *ngIf="isDataLoaded">
             <app-live-inning [inningId]="liveInningId" [roomId]="roomId" [inningType]="liveInningType"
                 [matchSettings]="matchSettings"></app-live-inning>
             <ng-container *ngIf="otherInningId">
-                <app-other-inning [inningId]="otherInningId" [inningType]="otherInningType"
+                <div class="mt-4">
+                    <app-other-inning [inningId]="otherInningId" [inningType]="otherInningType"
                     [matchSettings]="matchSettings"></app-other-inning>
+                </div>
             </ng-container>
         </ng-container>
     </c-card-body>
