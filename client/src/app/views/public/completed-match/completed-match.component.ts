@@ -18,6 +18,7 @@ export class CompletedMatchComponent implements OnInit {
     teamNames: any = [];
     isDataLoaded: boolean = false;
     matchSettings: any;
+    matchResult: string = "Match result not yet available";
 
     constructor(private route: ActivatedRoute, private publicService: PublicService) {
     }
@@ -42,6 +43,10 @@ export class CompletedMatchComponent implements OnInit {
                 this.teamNames = teams.map((val: any) => val.name);
                 this.matchSettings = settings;
                 this.isDataLoaded = true;
+                if (data?.result) {
+                    this.matchResult = data.result;
+                }
+                
             });
     }
 

@@ -1,77 +1,88 @@
 <div *ngIf="inning">
     <c-card class="mb-3">
-        <c-card-header>{{matchTitle}}&nbsp;{{inningType}}</c-card-header>
+        <c-card-header>
+            <div class="d-flex w-100 justify-content-center align-items-baseline">
+                <h5 class="mr-auto">{{matchTitle}}</h5>
+                <span class="px-1"><small>{{inningType}}</small></span>
+            </div>
+        </c-card-header>
         <c-card-body class="p-4">
-            <span *ngIf="isEditingMode">*Currently in the editing mode</span>
+            <c-alert *ngIf="isEditingMode" color="info">Currently in the editing mode</c-alert>
             <form cForm [formGroup]="scoreSubmitForm" (ngSubmit)="submitForm()">
                 <div class="mb-3">
-                    <span>{{inning.batting.name}}&nbsp;Batsmen</span>
-                    <span *ngIf="scoreSubmitForm.get('batsman')?.errors?.['required']">*required</span>
+                    <span><strong>{{inning.batting.name}}&nbsp;Batsmen</strong></span>
+                    <span class="text-danger px-2"
+                        *ngIf="scoreSubmitForm.get('batsman')?.errors?.['required']"><strong>*required</strong></span>
                     <c-form-check *ngFor="let player of inning.batting.players; let i = index">
-                        <input cFormCheckInput type="radio" [value]="player._id" name="batsman" formControlName="batsman"/>
+                        <input cFormCheckInput type="radio" [value]="player._id" name="batsman"
+                            formControlName="batsman" />
                         <label cFormCheckLabel>{{player.firstName +' '+ player.lastName}}</label>
                     </c-form-check>
                 </div>
                 <div class="mb-3" *ngIf="!isEditingMode">
-                    <span>{{inning.bowling.name}}&nbsp;Bowlers</span>
-                    <span *ngIf="scoreSubmitForm.get('bowler')?.errors?.['required']">*required</span>
+                    <span><strong>{{inning.bowling.name}}&nbsp;Bowlers</strong></span>
+                    <span class="text-danger px-2"
+                        *ngIf="scoreSubmitForm.get('bowler')?.errors?.['required']"><strong>*required</strong></span>
                     <c-form-check *ngFor="let player of inning.bowling.players; let i = index">
-                        <input cFormCheckInput type="radio" [value]="player._id" name="bowler" formControlName="bowler"/>
+                        <input cFormCheckInput type="radio" [value]="player._id" name="bowler"
+                            formControlName="bowler" />
                         <label cFormCheckLabel>{{player.firstName +' '+ player.lastName}}</label>
-                      </c-form-check>
+                    </c-form-check>
                 </div>
                 <div class="mb-3">
-                    <span>Runs</span>
+                    <span><strong>Batsman/Extra runs</strong></span>
                     <span *ngIf="scoreSubmitForm.get('runs')?.errors?.['required']">*required</span>
                     <c-form-check *ngFor="let run of runs; let i = index">
-                        <input cFormCheckInput type="radio" [value]="run" name="runs" formControlName="runs"/>
+                        <input cFormCheckInput type="radio" [value]="run" name="runs" formControlName="runs" />
                         <label cFormCheckLabel>{{run}}</label>
-                      </c-form-check>
+                    </c-form-check>
                 </div>
                 <div class="mb-3">
-                    <span>Illegal delivery</span>
+                    <span><strong>Illegal delivery</strong></span>
                     <c-form-check *ngFor="let illegalDelivery of illegalDeliveries; let i = index">
-                        <input cFormCheckInput type="radio" [value]="illegalDelivery.value" name="illegalDelivery" formControlName="illegalDelivery"/>
+                        <input cFormCheckInput type="radio" [value]="illegalDelivery.value" name="illegalDelivery"
+                            formControlName="illegalDelivery" />
                         <label cFormCheckLabel>{{illegalDelivery.name}}</label>
-                      </c-form-check>
+                    </c-form-check>
                 </div>
                 <div class="mb-3">
-                    <span>Extras</span>
+                    <span><strong>Extras</strong></span>
                     <c-form-check *ngFor="let extra of extrasType; let i = index">
-                        <input cFormCheckInput type="radio" [value]="extra" name="extraType" formControlName="extraType"/>
+                        <input cFormCheckInput type="radio" [value]="extra" name="extraType"
+                            formControlName="extraType" />
                         <label cFormCheckLabel>{{extra}}</label>
-                      </c-form-check>
+                    </c-form-check>
                 </div>
                 <div class="mb-3">
-                    <span>Wicket</span>
+                    <span><strong>Wicket</strong></span>
                     <c-form-check [switch]="true">
-                        <input cFormCheckInput type="checkbox" formControlName="wicket"/>
+                        <input cFormCheckInput type="checkbox" formControlName="wicket" />
                         <label cFormCheckLabel>Is wicket</label>
-                      </c-form-check>
+                    </c-form-check>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                    <button type="submit" cButton color="success">{{isEditingMode? 'Update':'Publish'}}</button>
-                    <button type="button" cButton *ngIf="!isEditingMode" (click)="syncData()" color="danger">Sync</button>
-                    <button type="button" cButton *ngIf="isEditingMode" (click)="cancelEditDelivery()" color="danger">Cancel</button>
-                  </div>
-                <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                  <button type="button" (click)="cancel()" cButton color="danger">Cancel</button>
-                  <button type="submit" cButton color="success">Submit</button>
-                </div> -->
-                <!-- <div *ngIf="matchTossResultForm.get('team')?.touched && matchTossResultForm.errors">
-                    <p *ngIf="matchTossResultForm.errors['sameTeamSelected']">
-                        Select two different teams
-                    </p>
-                    <p *ngIf="matchTossResultForm.errors['noConnection']">
-                        No network connection
-                    </p>
-                    <p *ngIf="matchTossResultForm.errors['unknownError']">
-                        Failed to Signup
-                    </p>
+                    <button type="submit" cButton color="dark">{{isEditingMode? 'Update':'Publish'}}</button>
+                    <button type="button" cButton *ngIf="!isEditingMode" (click)="syncData()" color="dark">Sync</button>
+                    <button type="button" cButton *ngIf="isEditingMode" (click)="cancelEditDelivery()"
+                        color="warning">Cancel</button>
                 </div>
-                {{ matchTossResultForm.value | json }}
-                {{ matchTossResultForm.status}} -->
-              </form>    
+            </form>
+            <div class="pt-3">
+                <c-alert color="info">
+                    <div class="d-flex w-100 justify-content-start">
+                        <span><strong>{{settings?.isIllegalDeliveryDiscarded ? '*Wides and no balls are considered as legal': '*Wides and no balls are considered as illegal'}}</strong></span>
+                    </div>
+                    <div class="d-flex w-100 justify-content-start">
+                        <span><strong>Wide ball: {{settings?.wide}} runs</strong></span>
+                    </div>
+                    <div class="d-flex w-100 justify-content-start">
+                        <span><strong>No Ball: {{settings?.noBall}} runs</strong></span>
+                    </div>
+                    <div class="d-flex w-100 justify-content-start">
+                        <span><strong>Balls per over: {{settings?.ballsPerOver}}</strong></span>
+                    </div>
+                </c-alert>
+            </div>
         </c-card-body>
     </c-card>
     <c-card class="mb-3" *ngIf="currentOverList && currentOverList.length > 0">
@@ -79,10 +90,13 @@
         <c-card-body class="p-4">
             <c-button-toolbar aria-label="Toolbar with button groups" role="group">
                 <c-button-group class="me-2" role="group" *ngFor="let currentBall of currentOverList; let i = index">
-                    <button type="button" cButton [color]="currentBall.isWicket? 'warning': currentBall.isLegal ? 'success':'danger'" (click)="loadDelivery(currentBall)">{{currentBall.isWicket? 'W': currentBall.runs + currentBall.extraRuns}}</button>
+                    <button type="button" cButton
+                        [color]="currentBall.isWicket? 'warning': currentBall.isLegal ? 'success':'danger'"
+                        (click)="loadDelivery(currentBall)">{{currentBall.isWicket? 'W': currentBall.runs +
+                        currentBall.extraRuns}}</button>
                 </c-button-group>
             </c-button-toolbar>
-            <button type="button" cButton color="primary" (click)="endOver()">Complete</button>
+            <button type="button" cButton color="dark" class="mt-2" (click)="endOver()">Complete Over</button>
         </c-card-body>
     </c-card>
     <c-card class="mb-3" *ngIf="previousOverList && previousOverList.length > 0">
@@ -90,20 +104,53 @@
         <c-card-body class="p-4">
             <c-button-toolbar aria-label="Toolbar with button groups" role="group">
                 <c-button-group class="me-2" role="group" *ngFor="let currentBall of previousOverList; let i = index">
-                    <button type="button" cButton [color]="currentBall.isWicket? 'warning': currentBall.isLegal ? 'success':'danger'" (click)="loadDelivery(currentBall)">{{currentBall.isWicket? 'W': currentBall.runs + currentBall.extraRuns}}</button>
+                    <button type="button" cButton
+                        [color]="currentBall.isWicket? 'warning': currentBall.isLegal ? 'success':'danger'"
+                        (click)="loadDelivery(currentBall)">{{currentBall.isWicket? 'W': currentBall.runs +
+                        currentBall.extraRuns}}</button>
                 </c-button-group>
             </c-button-toolbar>
         </c-card-body>
     </c-card>
-    {{scoreSubmitForm.value | json}}
-    {{scoreSubmitForm.status}}
-    
+    <button cButton color="dark" type="button" class="mb-3" (click)="openEndInningModal()">{{status === 'first_inning_started' ?
+        'Complete 1st inning': 'Complete Match'}}</button>
 </div>
 
-<p-dialog header="Header" [(visible)]="editDeliveryModalVisible" [modal]="true" [style]="{ width: '80vw' }" [draggable]="false">
-    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-        <button type="button" cButton color="danger" (click)="removeDelivery()" [disabled]="editingDelivery && editingDelivery.over===inning.currentOver">Remove</button>
-        <button type="button" cButton (click)="loadEditDelivery()" color="success">Edit</button>
+<p-dialog header="Are you sure you want to edit this delivery?" [(visible)]="editDeliveryModalVisible" [modal]="true" [style]="{ width: '80vw' }"
+    [draggable]="false">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
+        <button type="button" cButton color="dark" (click)="removeDelivery()"
+            [disabled]="editingDelivery && editingDelivery.over===inning.currentOver">Remove</button>
+        <button type="button" cButton (click)="loadEditDelivery()" color="dark">Edit</button>
         <button type="button" cButton (click)="closeEditDeliveryDialog()" color="warning">Cancel</button>
-      </div>
+    </div>
 </p-dialog>
+
+<p-dialog
+    [header]="status==='first_inning_started'? 'Do you want to end 1st Inning?': 'Do you want to complete the match?'"
+    [(visible)]="endInningModalVisble" [modal]="true" [style]="{ width: '80vw' }" [draggable]="false">
+    <div *ngIf="status==='first_inning_started'; else endFirstInning"
+        class="d-grid gap-2 d-md-flex justify-content-md-center my-3">
+        <button type="button" cButton (click)="endInning()" color="dark">End Inning</button>
+        <button type="button" cButton (click)="closeEndInningModal()" color="warning">Cancel</button>
+    </div>
+</p-dialog>
+
+<ng-template #endFirstInning>
+    <form cForm [formGroup]="matchCompleteForm" (ngSubmit)="submitMatchForm()">
+        <div class="mb-3">
+            <label cLabel for="result">Result</label>
+            <input cFormControl id="result" type="text" formControlName="result" />
+            <div *ngIf="matchCompleteForm.get('result')?.touched && matchCompleteForm.get('result')?.errors">
+                <p *ngIf="matchCompleteForm.get('result')?.errors?.['required']">
+                    *value is required
+                </p>
+            </div>
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center my-3">
+            <button type="submit" cButton color="dark">End Match</button>
+            <button type="button" cButton (click)="closeEndInningModal()" color="warning">Cancel</button>
+        </div>
+    </form>
+
+</ng-template>
