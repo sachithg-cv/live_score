@@ -269,4 +269,19 @@ router.get('/:matchId/secondInning/end', currentuser, requireAuth, async (req: R
     res.status(200).send(match);
 });
 
+router.post('/:matchId/secondInning/end', currentuser, requireAuth, async (req: Request, res: Response) => {
+  const { matchId } = req.params;
+  const { result } = req.body;
+
+  const match = await Match.findById(matchId).exec();
+  if (match) {
+      match.status="second_inning_ended";
+      match.isLive = false;
+      match.result = result;
+      await match.save();
+  }
+  
+  res.status(200).send(match);
+});
+
 export {router as matchRouter};

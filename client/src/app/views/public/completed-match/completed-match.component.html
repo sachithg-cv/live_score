@@ -6,7 +6,7 @@
     </c-card-header>
     <c-card-body class="p-4">
         <!-- remove toss result and add match results here-->
-        <c-alert color="info" class="py-0"><small>{{tossSummaryLine}}</small></c-alert>
+        <c-alert color="info" class="py-0"><small>{{matchResult}}</small></c-alert>
         <ng-container *ngIf="isDataLoaded">
             <app-other-inning [inningId]="firstInningId" [inningType]="firstInningType"
                 [matchSettings]="matchSettings"></app-other-inning>

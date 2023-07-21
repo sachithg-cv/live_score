@@ -11,7 +11,7 @@ router.get('/matches', async (req, res) => {
 
 router.get('/live/:matchId', async (req, res) => {
     const { matchId } = req.params;
-    const matches = await Match.findById(matchId,'roomId teams toss status firstInning secondInning settings').populate('teams', 'name').exec();
+    const matches = await Match.findById(matchId,'roomId teams toss status firstInning secondInning settings result').populate('teams', 'name').exec();
     res.status(200).send(matches);
 });
 

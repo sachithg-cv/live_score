@@ -50,7 +50,7 @@
                 <tbody>
                     <tr *ngFor="let batsman of batsmen">
                         <td [ngClass]=" batsman?.isOut ? 'text-danger' : 'text-dark'">{{batsman?._id[1]}}<span
-                                *ngIf="batsman?.isOut"><small class="text-danger px-1">out</small></span></td>
+                                *ngIf="batsman?.isOut"><small class="text-danger px-1">(out)</small></span></td>
                         <td [ngClass]=" batsman?.isOut ? 'text-danger' : 'text-dark'">{{batsman?.runs}}</td>
                         <td [ngClass]=" batsman?.isOut ? 'text-danger' : 'text-dark'">{{batsman?.balls}}</td>
                     </tr>
