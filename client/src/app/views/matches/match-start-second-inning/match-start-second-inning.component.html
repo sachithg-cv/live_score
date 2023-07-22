@@ -1,3 +1,11 @@
-<p>Second Inning</p>
-<button type="button" (click)="start()" cButton color="success" [disabled]="status!=='first_inning_ended'">Start</button>
-<button type="button" (click)="end()" cButton color="danger" [disabled]="status!=='second_inning_started'">End</button>
+<h6>Second Inning Controls</h6>
+<div class="d-flex w-100 justify-content-start">
+    <div>
+        <button type="button" (click)="start()" cButton color="dark" [disabled]="status!=='first_inning_ended'">Start
+            Inning</button>
+    </div>
+    <div class="px-3">
+        <button type="button" (click)="end()" cButton color="dark" [disabled]="status!=='second_inning_started'">End
+            Inning</button>
+    </div>
+</div>

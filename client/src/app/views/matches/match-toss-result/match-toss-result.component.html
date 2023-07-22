@@ -20,8 +20,8 @@
     </div>
     
     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-      <button type="button" (click)="cancel()" cButton color="danger">Cancel</button>
-      <button type="submit" cButton color="success">Submit</button>
+      <button type="button" (click)="cancel()" cButton color="warning">Cancel</button>
+      <button type="submit" cButton color="dark">Submit</button>
     </div>
     <div *ngIf="matchTossResultForm.get('team')?.touched && matchTossResultForm.errors">
         <p *ngIf="matchTossResultForm.errors['sameTeamSelected']">
@@ -34,11 +34,11 @@
             Failed to Signup
         </p>
     </div>
-    {{ matchTossResultForm.value | json }}
-    {{ matchTossResultForm.status}}
   </form>
 
   <ng-template #tossSummary>
-    <h4>Toss results</h4>
-    <p>{{tossSummaryLine}}</p>
+    <h6>Toss results</h6>
+    <c-alert color="info">
+      <span>{{tossSummaryLine}}</span>
+    </c-alert>
   </ng-template>

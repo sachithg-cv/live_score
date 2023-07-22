@@ -57,8 +57,8 @@
                 </c-form-check>
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                <button type="button" (click)="cancel()" cButton color="danger">Cancel</button>
-                <button type="submit" cButton color="success">Create</button>
+                <button type="button" (click)="cancel()" cButton color="warning">Cancel</button>
+                <button type="submit" cButton color="dark">Create</button>
             </div>
             <div
                 *ngIf="matchCreateForm.get('team1')?.touched && matchCreateForm.get('team2')?.touched && matchCreateForm.errors">
