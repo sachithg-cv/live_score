@@ -130,4 +130,11 @@ export class MatchService {
             payload
         );
     }
+
+    changeMatchSettings(matchId: string, payload: any) {
+        return this.httpClient.post<any>(
+            `${this.baseUrl}/matches/${matchId}/settings`,
+            payload
+        );
+    }
 }

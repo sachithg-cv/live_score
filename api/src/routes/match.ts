@@ -34,9 +34,28 @@ router.get('/', currentuser, requireAuth, async (req: Request, res: Response) =>
     res.status(200).send(matches);
 });
 
+
 router.get('/live', currentuser, requireAuth, async (req: Request, res: Response) => {
     const matches = await Match.find({ isDeleted: false, isLive: true }).populate('teams', 'name').exec();
     res.status(200).send(matches);
+});
+
+router.post('/:matchId/settings', currentuser, requireAuth, async (req: Request, res: Response) => {
+  const { matchId } = req.params;
+  const { wide, noBall, isIllegalDeliveryDiscarded, ballsPerOver }  = req.body;
+
+  const match = await Match.findById(matchId).exec();
+  if (match) {
+    match.settings = {
+      wide,
+      noBall,
+      isIllegalDeliveryDiscarded,
+      ballsPerOver
+    };
+    await match.save();
+  }
+ 
+  res.status(200).send({wide,noBall,isIllegalDeliveryDiscarded,ballsPerOver});
 });
 
 router.get('/:matchId/innings', currentuser, requireAuth, async (req: Request, res: Response) => {

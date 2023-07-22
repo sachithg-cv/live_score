@@ -1,3 +1,10 @@
-<p>First Inning</p>
-<button type="button" (click)="start()" cButton color="success" [disabled]="status!=='tossed'">Start</button>
-<button type="button" (click)="end()" cButton color="danger" [disabled]="status!=='first_inning_started'">End</button>
+<h6>First Inning Controls</h6>
+<div class="d-flex w-100 justify-content-start">
+    <div>
+        <button type="button" (click)="start()" cButton color="dark" [disabled]="status!=='tossed'">Start Inning</button>
+    </div>
+    <div class="px-3">
+        <button type="button" (click)="end()" cButton color="dark"
+            [disabled]="status!=='first_inning_started'">End Inning</button>
+    </div>
+</div>

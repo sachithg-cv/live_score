@@ -1,11 +1,104 @@
 <c-card class="mb-3">
-    <c-card-header>Match List</c-card-header>
+    <c-card-header *ngIf="match">
+        <div class="d-flex w-100 justify-content-center">
+            <h5><strong>{{match.teams[0].name}}&nbsp;vs&nbsp;{{match.teams[1].name}}</strong></h5>
+        </div>
+    </c-card-header>
     <c-card-body class="p-4">
         <div *ngIf="match">
-            {{match | json}}
-            <app-match-toss-result (tossUpdateEvent)="updateToss($event)" [teams]="match.teams" [status]="match.status" [matchId]="match._id" [tossResult]="match.toss"></app-match-toss-result>
-            <app-match-start-first-inning [matchId]="match._id" [status]="match.status"></app-match-start-first-inning>
-            <app-match-start-second-inning [matchId]="match._id" [status]="match.status"></app-match-start-second-inning>
+            <div class="mt-3">
+                <app-match-toss-result (tossUpdateEvent)="updateToss($event)" [teams]="match.teams" [status]="match.status"
+                [matchId]="match._id" [tossResult]="match.toss"></app-match-toss-result>
+            </div>
+            <hr/>
+            <div class="mb-2">
+                <app-match-start-first-inning [matchId]="match._id" [status]="match.status"></app-match-start-first-inning>
+            </div>
+            <hr/>
+            <div>
+                <app-match-start-second-inning [matchId]="match._id"
+                [status]="match.status"></app-match-start-second-inning>
+            </div>
+            
+            <hr/>
+            <div class="d-flex w-100 justify-content-start mt-3">
+                <h6>Match settings</h6>
+            </div>
+            <form cForm [formGroup]="matchSettingsForm" (ngSubmit)="submitMatchSettings()">
+                <div class="mb-3">
+                    <label cLabel for="wide">Runs for wide delivery</label>
+                    <input cFormControl id="wide" type="text" formControlName="wide" />
+                    <div *ngIf="matchSettingsForm.get('wide')?.touched && matchSettingsForm.get('wide')?.errors">
+                        <p *ngIf="matchSettingsForm.get('wide')?.errors?.['required']">
+                            Value is required
+                        </p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label cLabel for="noBall">Runs for No delivery</label>
+                    <input cFormControl id="noBall" type="text" formControlName="noBall" />
+                    <div *ngIf="matchSettingsForm.get('noBall')?.touched && matchSettingsForm.get('noBall')?.errors">
+                        <p *ngIf="matchSettingsForm.get('noBall')?.errors?.['required']">
+                            Value is required
+                        </p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label cLabel for="ballsPerOver">Balls per over</label>
+                    <input cFormControl id="ballsPerOver" type="text" formControlName="ballsPerOver" />
+                    <div
+                        *ngIf="matchSettingsForm.get('ballsPerOver')?.touched && matchSettingsForm.get('ballsPerOver')?.errors">
+                        <p *ngIf="matchSettingsForm.get('ballsPerOver')?.errors?.['required']">
+                            Value is required
+                        </p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <c-form-check [switch]="true">
+                        <input cFormCheckInput type="checkbox" formControlName="isIllegalDeliveryDiscarded" />
+                        <label cFormCheckLabel>Is wides and no deliveries are considered as legal</label>
+                    </c-form-check>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <button type="submit" cButton color="dark">Change</button>
+                </div>
+            </form>
+            <hr/>
+            
+            <h6>
+                Players
+            </h6>
+            <div class="d-flex w-100 justify-content-between">
+                <div>
+                    <table cTable [responsive]="true">
+                        <thead >
+                        <tr>
+                          <th scope="col"><small>{{match.teams[0].name}}</small></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let player of match.teams[0].players">
+                          <td><small>{{player.firstName + ' ' +player.lastName}}</small></td>
+                        </tr>
+                        </tbody>
+                      </table>
+                </div>
+                <div>
+                    <table cTable [responsive]="true">
+                        <thead >
+                        <tr>
+                          <th scope="col"><small>{{match.teams[1].name}}</small></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let player of match.teams[1].players">
+                          <td><small>{{player.firstName + ' ' +player.lastName}}</small></td>
+                        </tr>
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+            
         </div>
     </c-card-body>
 </c-card>
