@@ -40,6 +40,16 @@ router.get('/live', currentuser, requireAuth, async (req: Request, res: Response
     res.status(200).send(matches);
 });
 
+router.get('/:matchId/delete', currentuser, requireAuth, async (req: Request, res: Response) => {
+  const { matchId } = req.params;
+  const match = await Match.findById(matchId).exec();
+  if(match) {
+    match.isDeleted = true;
+    await match.save();
+  }
+  res.status(200).send({message: 'success'});
+});
+
 router.post('/:matchId/settings', currentuser, requireAuth, async (req: Request, res: Response) => {
   const { matchId } = req.params;
   const { wide, noBall, isIllegalDeliveryDiscarded, ballsPerOver }  = req.body;

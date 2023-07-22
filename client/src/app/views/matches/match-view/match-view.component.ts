@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatchService } from '../match.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -20,7 +20,7 @@ export class MatchViewComponent implements OnInit {
         ballsPerOver: new FormControl('', Validators.required),
     });
 
-    constructor(private route: ActivatedRoute, private matchService: MatchService) {
+    constructor(private route: ActivatedRoute, private matchService: MatchService, private router:Router) {
 
     }
 
@@ -72,6 +72,14 @@ export class MatchViewComponent implements OnInit {
                 noBall: data?.noBall,
                 wide: data?.wide,
             });
+        });
+    }
+
+    deleteMatch(): void{
+        this.matchService.deleteMatch(this.match._id)
+        .pipe(takeUntil(this.notifier))
+        .subscribe((_)=>{
+            this.router.navigateByUrl("/match/list");
         });
     }
 }
