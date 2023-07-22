@@ -137,4 +137,10 @@ export class MatchService {
             payload
         );
     }
+
+    deleteMatch(matchId: string) {
+        return this.httpClient.get<any>(
+            `${this.baseUrl}/matches/${matchId}/delete`
+        );
+    }
 }
