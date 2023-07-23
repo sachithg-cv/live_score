@@ -35,11 +35,12 @@ import {
   SharedModule,
   SidebarModule,
   TabsModule,
-  UtilitiesModule
+  UtilitiesModule,
 } from '@coreui/angular';
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ToastModule } from 'primeng/toast';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -75,7 +76,8 @@ const APP_CONTAINERS = [
     BadgeModule,
     ListGroupModule,
     CardModule,
-    NgScrollbarModule
+    NgScrollbarModule,
+    ToastModule
   ],
   providers: [
     {

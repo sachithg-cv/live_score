@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DashboardService } from './dashboard.service';
 import { Subject, map, takeUntil } from 'rxjs';
+import { AppService } from 'src/app/app.service';
 @Component({
   templateUrl: 'dashboard.component.html',
   styleUrls: ['dashboard.component.scss']
@@ -12,7 +13,7 @@ export class DashboardComponent implements OnInit {
   scheduledMatches:any[] = [];
   completedMatches:any[] = [];
 
-  constructor(private dashboardService: DashboardService) {
+  constructor(private dashboardService: DashboardService, private appService: AppService) {
   }
 
 
@@ -24,6 +25,12 @@ export class DashboardComponent implements OnInit {
     .subscribe((data)=>{
       this.loadMatches(data);
       console.log(data);
+    });
+
+    this.appService.matches$
+    .pipe(takeUntil(this.notifier))
+    .subscribe((data)=>{
+      this.loadMatches(data);
     });
   }
 
