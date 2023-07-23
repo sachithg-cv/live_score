@@ -79,7 +79,7 @@ export class MatchViewComponent implements OnInit {
         this.matchService.deleteMatch(this.match._id)
         .pipe(takeUntil(this.notifier))
         .subscribe((_)=>{
-            this.router.navigateByUrl("/match/list");
+            this.router.navigateByUrl("/matches/list");
         });
     }
 }
