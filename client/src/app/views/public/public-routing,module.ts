@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LiveMatchComponent } from './live-match/live-match.component';
 import { CompletedMatchComponent } from './completed-match/completed-match.component';
-import { ScheduledMatchComponent } from './scheduled-match/scheduled-match.component';
 
 const routes: Routes = [
     {
@@ -24,14 +23,6 @@ const routes: Routes = [
             title: 'Completed',
         },
     },
-    {
-        path: 'scheduled/:matchId',
-        component: ScheduledMatchComponent,
-        data: {
-            title: 'Completed',
-        },
-    },
-    
 ];
 
 @NgModule({
