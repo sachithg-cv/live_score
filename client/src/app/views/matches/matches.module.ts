@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ButtonGroupModule, ButtonModule, CardModule, FormModule, GridModule, TableModule, AlertModule } from '@coreui/angular';
+import { ButtonGroupModule, ButtonModule, CardModule, FormModule, GridModule, TableModule, AlertModule, ListGroupModule } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -32,7 +32,8 @@ import { DialogModule } from 'primeng/dialog';
     DropdownModule,
     ButtonGroupModule,
     DialogModule,
-    AlertModule
+    AlertModule,
+    ListGroupModule,
   ],
   declarations: [
     MatchCreateComponent,

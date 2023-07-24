@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule} from '@angular/common/http';
 import { PublicRoutingModule} from './public-routing,module';
 import { LiveMatchComponent } from './live-match/live-match.component';
-import { ScheduledMatchComponent } from './scheduled-match/scheduled-match.component';
 import { CompletedMatchComponent } from './completed-match/completed-match.component';
 import { LiveInningComponent } from './live-inning/live-inning.component';
 import { OtherInningComponent } from './other-inning/other-inning.component';
@@ -30,7 +29,6 @@ import { OtherInningComponent } from './other-inning/other-inning.component';
   ],
   declarations: [
     LiveMatchComponent,
-    ScheduledMatchComponent,
     CompletedMatchComponent,
     LiveInningComponent,
     OtherInningComponent

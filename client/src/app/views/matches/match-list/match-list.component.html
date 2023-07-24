@@ -1,32 +1,20 @@
 <c-card class="mb-3">
     <c-card-header>Match List</c-card-header>
     <c-card-body class="p-4">
-        <table cTable [responsive]="true" *ngIf="matches.length > 0; else NoMatches">
-            <thead >
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Team1</th>
-                <th scope="col">Team2</th>
-                <th scope="col">Status</th>
-                <th scope="col">Controls</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let match of matches; let i = index">
-                <th scope="row">{{i+1}}</th>
-                <td>{{match.team1}}</td>
-                <td>{{match.team2}}</td>
-                <td>{{match.status}}</td>
-                <td>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                        <a [routerLink]="['/matches/view',match.id]">
-                            <button cButton size="sm" shape="rounded-pill" color="warning">View</button>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-          </table>
+        <div cListGroup *ngIf="matches.length > 0; else NoMatches">
+            <a [routerLink]="['/matches/view',match.id]" cListGroupItem *ngFor="let match of matches; let i = index">
+                <div class="d-flex w-100 justify-content-start">
+                    <h5 class="mb-1"><small>{{match.team1}}</small></h5>
+                    <h5 class="mx-1"><small>vs</small></h5>
+                    <h5 class="mb-1"><small>{{match.team2}}</small></h5>
+                </div>
+                <div class="d-flex w-100 justify-content-between">
+                    <c-alert [color]="match.status==='scheduled'?'success':'info'"
+                        class="py-0 mb-1"><small>{{match.status}}</small></c-alert>
+                    <small><span><i class="fa-solid fa-arrow-right"></i></span></small>
+                </div>
+            </a>
+        </div>
     </c-card-body>
 </c-card>
 
