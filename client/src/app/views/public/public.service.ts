@@ -23,4 +23,10 @@ export class PublicService {
             `${this.baseUrl}/public/innings/${inningId}`
         );
     }
+
+    getTeams() {
+        return this.httpClient.get<any>(
+            `${this.baseUrl}/public/teams`
+        );
+    }
 }

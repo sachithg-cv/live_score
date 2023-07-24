@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { Match } from "../models/match";
 import { Inning } from "../models/inning";
 import { Global } from "../models/global";
+import { Team } from "../models/team";
 
 const router = express.Router();
 
@@ -311,6 +312,16 @@ router.get('/globals', async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send({ message: 'internal server error' });
+  }
+});
+
+router.get('/teams', async (req: Request, res: Response) => {
+  try {
+      const teams = await Team.find({ isDeleted: false }).exec();
+      res.status(200).send(teams);
+  } catch (err) {
+      console.log(err);
+      res.status(500).send({ message: 'internal server error' });
   }
 });
 

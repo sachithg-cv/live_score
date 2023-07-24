@@ -5,16 +5,16 @@ export const navSecuredItems: INavData[] = [
         title: true, name: 'Teams'
     },
     {
-        name: 'Create', url: '/teams/create', iconComponent: {name:'cil-puzzle'}
+        name: 'Create', url: '/teams/create', iconComponent: {name:'cil-people'}
     },
     {
         title: true, name: 'Matches'
     },
     {
-        name: 'Create', url: '/matches/create', iconComponent: {name:'cil-puzzle'}
+        name: 'Create', url: '/matches/create', iconComponent: {name:'cil-task'}
     },
     {
-        name: 'List', url: '/matches/list', iconComponent: {name:'cil-puzzle'}
+        name: 'List', url: '/matches/list', iconComponent: {name:'cil-layers'}
     },
     {
         name: 'Live', url: '/matches/live-list-admin', iconComponent: {name:'cil-puzzle'}

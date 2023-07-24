@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LiveMatchComponent } from './live-match/live-match.component';
 import { CompletedMatchComponent } from './completed-match/completed-match.component';
+import { TeamListComponent } from './team-list/team-list.component';
 
 const routes: Routes = [
     {
@@ -21,6 +22,13 @@ const routes: Routes = [
         component: CompletedMatchComponent,
         data: {
             title: 'Completed',
+        },
+    },
+    {
+        path: 'teams',
+        component: TeamListComponent,
+        data: {
+            title: 'Teams',
         },
     },
 ];
