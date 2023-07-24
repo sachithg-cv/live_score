@@ -1,0 +1,23 @@
+<c-card class="mb-3">
+    <c-card-header>Team List</c-card-header>
+    <c-card-body class="p-4">
+        <div *ngIf="teams.length > 0; else NoTeams">
+            <p-accordion [activeIndex]="0">
+                <p-accordionTab [header]="team.name" *ngFor="let team of teams">
+                    <div cListGroup *ngIf="team.players && team.players.length > 0">
+                        <div cListGroupItem *ngFor="let player of team.players">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6>{{player.firstName+' '+player.lastName}}</h6>
+                                <c-badge color="info" shape="rounded-pill">{{player.gender}}</c-badge>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordionTab>
+            </p-accordion>
+        </div>
+    </c-card-body>
+</c-card>
+
+<ng-template #NoTeams>
+    No teams found.
+</ng-template>

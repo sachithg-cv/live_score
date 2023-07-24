@@ -9,6 +9,8 @@ import { LiveMatchComponent } from './live-match/live-match.component';
 import { CompletedMatchComponent } from './completed-match/completed-match.component';
 import { LiveInningComponent } from './live-inning/live-inning.component';
 import { OtherInningComponent } from './other-inning/other-inning.component';
+import { TeamListComponent } from './team-list/team-list.component';
+import { AccordionModule } from 'primeng/accordion';
 
 @NgModule({
   imports: [
@@ -25,13 +27,15 @@ import { OtherInningComponent } from './other-inning/other-inning.component';
     TableModule,
     ListGroupModule,
     AlertModule,
-    BadgeModule
+    BadgeModule,
+    AccordionModule
   ],
   declarations: [
     LiveMatchComponent,
     CompletedMatchComponent,
     LiveInningComponent,
-    OtherInningComponent
+    OtherInningComponent,
+    TeamListComponent
   ],
 })
 export class PublicModule {
