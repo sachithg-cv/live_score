@@ -3,6 +3,7 @@ import { Subject, map, takeUntil } from 'rxjs';
 import { PublicService } from '../public.service';
 import { io } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class LiveInningComponent implements OnInit {
     over!: string;
 
 
-    constructor(private publicService: PublicService) {
+    constructor(private publicService: PublicService, private router: Router) {
     }
 
 
@@ -114,6 +115,12 @@ export class LiveInningComponent implements OnInit {
                 }
 
             });
+
+            this.room.on("end_inning", (session: any) => {
+                console.log('end_inning: ', session);
+                this.router.navigateByUrl("/dashboard");
+            });
+
         } catch (err) {
             console.error(err);
         }
