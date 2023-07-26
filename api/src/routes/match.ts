@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import { Inning } from "../models/inning";
 import { Global } from "../models/global";
 import globalNamespace from '../messaging/namespace/global-name-space';
+import matchNamespace from '../messaging/namespace/match-name-space';
 
 const router = express.Router();
 
@@ -360,6 +361,16 @@ router.get('/:matchId/firstInning/end', currentuser, requireAuth, async (req: Re
       console.error(err);
     }
 
+    try {
+      if (match) {
+        matchNamespace.getNameSpace().to(match?.roomId).emit("end_inning", {
+          matchId: matchId
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
     res.status(200).send(match);
   } catch (err) {
     console.error(err);
@@ -420,6 +431,16 @@ router.get('/:matchId/secondInning/end', currentuser, requireAuth, async (req: R
       console.error(err);
     }
 
+    try {
+      if (match) {
+        matchNamespace.getNameSpace().to(match?.roomId).emit("end_inning", {
+          matchId: matchId
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
     res.status(200).send(match);
   } catch (err) {
     console.error(err);
@@ -447,6 +468,16 @@ router.post('/:matchId/secondInning/end', currentuser, requireAuth, async (req: 
       globalNamespace.publishMessage(roomId, "dashboard", matches);
       if (match) {
         globalNamespace.publishMessage(roomId, "info", { message: `${match?.teams[0].name} vs ${match?.teams[1].name}: ${result}` });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
+    try {
+      if (match) {
+        matchNamespace.getNameSpace().to(match?.roomId).emit("end_inning", {
+          matchId: matchId
+        });
       }
     } catch (err) {
       console.error(err);
