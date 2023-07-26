@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
         return;
       }
 
-      this.room = io(`${environment.messgingUrl}/global`, {
+      this.room = io(`${environment.messgingUrl}/match`, {
         query: {
           roomId: this.roomId
         }
