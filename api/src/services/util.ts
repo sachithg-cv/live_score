@@ -225,6 +225,43 @@ export const runScripts = async () => {
         });
         await aa.save();
 
+        const pf = new Team({
+            name: "Phoenix Flames",
+            players: [
+                {
+                    firstName:"Z",
+                    lastName: " Jurangpathy",
+                    gender:"Male",
+                },
+                {
+                    firstName:"M",
+                    lastName: "Abdurrahman",
+                    gender:"Male",
+                },
+                {
+                    firstName:"J",
+                    lastName: "Sarwapriya",
+                    gender:"Male",
+                },
+                {
+                    firstName:"I",
+                    lastName: "Perera",
+                    gender:"Male",
+                },
+                {
+                    firstName:"T",
+                    lastName: "Sandaru",
+                    gender:"Male",
+                },
+                {
+                    firstName:"D",
+                    lastName: "Dissanayake",
+                    gender:"Female",
+                }
+            ]
+        });
+        await pf.save();
+
     } catch (err) {
         console.log(err);
     }
