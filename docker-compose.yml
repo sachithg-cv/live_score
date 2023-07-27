@@ -1,6 +1,7 @@
 version: '3.7'
 services:
   mongodb_container:
+    restart: always
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
@@ -20,6 +21,9 @@ services:
     ports:
       - "8082:80"
   api:
+    depends_on:
+      - mongodb_container
+    restart: always
     build:
       dockerfile: Dockerfile
       context: ./api
@@ -27,6 +31,7 @@ services:
 #      - /app/node_modules
 #      - ./api:/app
   client:
+    restart: always
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true
