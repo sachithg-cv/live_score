@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TeamCreateComponent } from './team-create/team-create.component';
+import { TeamListComponent } from './team-list/team-list.component';
+import { TeamEditComponent } from './team-edit/team-edit.component';
 
 const routes: Routes = [
   {
@@ -12,7 +14,7 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'create',
+        redirectTo: 'list',
       },
       {
         path: 'create',
@@ -21,6 +23,22 @@ const routes: Routes = [
           title: 'Team Create',
         },
       },
+      {
+        path: 'list',
+        component: TeamListComponent,
+        data: {
+          title: 'Team List',
+        },
+      },
+      {
+        path: 'edit/:teamId',
+        component: TeamEditComponent,
+        data: {
+          title: 'Team Edit',
+        },
+      },
+      
+      
     ],
   },
 ];

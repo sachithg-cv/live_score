@@ -42,4 +42,22 @@ router.get('/:teamId', currentuser, requireAuth, async (req: Request, res: Respo
     }
 });
 
+router.post('/:teamId/players', currentuser, requireAuth, async (req: Request, res: Response) => {
+    try {
+        const { teamId } = req.params;
+        const team = await Team.findById(teamId).exec();
+        if(team) {
+            const { players } = req.body;
+            players.forEach( (player:any) => {
+                team?.players.push(player);
+            });
+            await team.save();
+        }
+        res.status(200).send(team);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ message: 'internal server error' });
+    }
+});
+
 export { router as teamsRouter };
