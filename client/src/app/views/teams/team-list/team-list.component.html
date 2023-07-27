@@ -1,0 +1,25 @@
+<c-card class="mb-3">
+    <c-card-header>Teams List</c-card-header>
+    <c-card-body class="p-4">
+        <div cListGroup *ngIf="teams.length > 0; else NoTeams">
+            <a [routerLink]="['/teams/edit',team._id]" cListGroupItem *ngFor="let team of teams; let i = index">
+                <div class="d-flex w-100 justify-content-center">
+                    <h5 class="mb-1"><small>{{team.name}}</small></h5>
+                </div>
+
+                <ul cListGroup *ngIf="team.players && team.players.length > 0">
+                    <div class="d-flex w-100 justify-content-between" cListGroupItem
+                        *ngFor="let player of team.players">
+                        <small>{{player.firstName+' '+player.lastName}}</small>
+                        <small>{{player.gender}}</small>
+                    </div>
+
+                </ul>
+            </a>
+        </div>
+    </c-card-body>
+</c-card>
+
+<ng-template #NoTeams>
+    No matches found. Please add matches.
+</ng-template>

@@ -5,6 +5,9 @@ export const navSecuredItems: INavData[] = [
         title: true, name: 'Teams'
     },
     {
+        name: 'List', url: '/teams/list', iconComponent: {name:'cil-people'}
+    },
+    {
         name: 'Create', url: '/teams/create', iconComponent: {name:'cil-people'}
     },
     {

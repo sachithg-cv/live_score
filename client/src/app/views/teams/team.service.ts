@@ -46,4 +46,11 @@ export class TeamService {
             `${this.baseUrl}/teams`
         );
     }
+
+    addPlayers(teamId: string, players:any) {
+        return this.httpClient.post<any>(
+            `${this.baseUrl}/teams/${teamId}/players`,
+            players
+        );
+    }
 }
